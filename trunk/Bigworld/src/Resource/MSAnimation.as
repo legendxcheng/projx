@@ -6,7 +6,7 @@ package Resource
 	// Just stores frames' bitmapdata.
 	public class MSAnimation
 	{
-		var _frames:Array;
+		private var _frames:Array;
 		
 		public function frameNum():int
 		{
