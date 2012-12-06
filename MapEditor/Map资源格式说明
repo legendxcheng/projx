@@ -1,0 +1,19 @@
+.res
+前面一个int 表明前端XML的长度
+后面是一个相应长度的XML
+再之后是两个格子数 长度的bool数组
+第一个是可通行点
+第二个是半显示点
+pic是从上到下，从左到右的图片id
+
+XML格式：
+<map>	
+	<nyMax></nyMax>
+	<nxMax></nxMax>
+	<nxOffset></nxOffset>
+	<gridNum></gridNum>
+	<mapList>
+		<pic>
+		</pic>
+	</mapList>
+</map>
