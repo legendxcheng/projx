@@ -237,7 +237,3 @@ d --sheet main-sd.png assets/*.png
         creates main-sd.plist and main-sd.png from all png files in assets
         scaling all images to 50%, trimming all files and creating
         a texture with max. 1024x1024px
-
-
-
-D:\Program Files (x86)\TexturePacker\bin>
