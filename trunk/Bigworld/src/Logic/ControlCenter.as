@@ -43,6 +43,14 @@ package Logic
 			return _instance;
 		}
 		
+		/*
+			function called every frame, the main entry for updates
+		*/
+		public function updtate():void
+		{
+			
+		}
+		
 		public function ControlCenter()
 		{
 			_bgLayer = new BgLayer();
