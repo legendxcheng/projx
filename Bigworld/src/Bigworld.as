@@ -1,7 +1,7 @@
 package
 {
 	
-	import Logic.ControlCenter;
+	import MCW.BigWorld.Logic.ControlCenter;
 	
 	import flash.display.Sprite;
 
