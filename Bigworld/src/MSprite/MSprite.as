@@ -1,5 +1,6 @@
 package MSprite
 {
+	import Resource.IResource;
 	import Resource.MSAnimation;
 	
 	import flash.display.BitmapData;
@@ -23,6 +24,7 @@ package MSprite
 		private var _scaleY:Number;
 		private var _x:int;
 		private var _y:int;
+
 		private var _rotation:Number;// in 0~2PI
 		
 		private var _visible:Boolean;
