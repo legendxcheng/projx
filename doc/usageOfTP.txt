@@ -1,0 +1,243 @@
+Usage: TexturePacker [options] [<*.png|gif|tif|jpg|swf>] [<imagefolder>] [<*.tps
+>*]
+
+You can specify one or more .png or .tps files or directories for processing.
+   <*.png|gif|tif|jpg>        .png .gif .tif .jpg files are added to the sheet
+   <*.swf>                    .swf flash files are added to the sheet
+   <*.swf>                    requires pro license and --enable-swf-import
+   <imagefolder>              Recursively adds all *.png files in the tree
+   <*.tps>                    *.tps file created with TexturePackerPro (requires
+ pro license)
+                              Additional set options override settings in the *.
+tps file
+
+Options:
+  --help                      Display help text
+  --version                   Print version information
+  --gui                       Launch in with graphical user interface
+
+  Output:
+  --sheet <filename>          Name of the sheet to write, supported formats:
+                                  png     - 32bit, allows all pixel formats
+                                  jpg     - jpg lossy compression, set padding t
+o avoid problems
+                                  pvr     - raw format - best for iphone (extend
+ed)
+                                  pvr.ccz - compressed version of pvr (extended)
+
+                                  pvr.gz  - gzip compressed version of pvr (exte
+nded)
+
+  --data <filename>           Name of the data file to write
+
+  --format <format>           Format to write, default is cocos2d
+                              Available formats:
+                                  cocos2d             plist format for cocos2d
+                                  cocos2d-0.99.4      plist format for 'old' coc
+os2d
+                                  cocos2d-original    plist format for cocos2d (
+original version)
+                                  corona              lua file for Corona TM SDK
+
+                                  sparrow             xml file for Sparrow SDK
+                                  libgdx              text file for lib GDX
+                                  json                text file for json/html as
+ hash
+                                  unity               text file for Unity3D, jso
+n format but .txt ending
+                                  json-array          text file for json/html as
+ array
+                                  css                 css format for web design
+                                  gideros             Format for Gideros
+                                  cegui               Format for CEGUI / OGRE
+                                  andengine           Format for AndEngine
+                                  agk                 Format for AppGameKit
+                                  slick2d             Format for Slick2D
+                                  moai                Format for Moai
+                                  bhive               Format for BHive
+                                  xml                 Generic XML format
+
+  --auto-sd                   Automatically creates additional standard definiti
+on file (50% scale)
+                              Requires data and texture file name to end with @2
+x or -hd
+                              e.g. sheet-hd.plist
+  --texturepath <path>        Adds the path to the texture file name stored in t
+he data file.
+                              Use this if your sprite sheets are not stored in a
+nother folder than your data files.
+  --trim-sprite-names         Removes .png, .bmp and .jpg from sprite names
+  --replace <regexp>=<string> Replaces matching parts of the sprite's name with
+<string>
+                              Uses full regular expressions, make sure to escape
+ the expression
+  --ignore-files <regexp>     Ignores all images fitting the given pattern (may
+be used several times)
+                              You can use * and ?, make sure to escape the wildc
+ards when working with bash
+
+  Layout:
+  --algorithm <name>          Choose algorithm
+                                  MaxRects        Powerful packing algorithm (ex
+tended)
+                                  Basic           Simple algorithm for tilemaps
+and atlases (free)
+  Algorithm settings:
+    MaxRects:
+        --maxrects-heuristics <value>  Heuristics
+            best              Detects best option
+            shortSide         Fits sprites short side
+            longSide          Fits sprites long side
+            area              Finds location by area
+            bottomLeft        Fits bottom left
+            contactPoint      Optimizes contact points
+    Basic:
+        --basic-sort-by <value>  Sort by
+            best              Detects best option
+            name              Sorts by sprite's name
+            width             Sorts by sprite's width
+            height            Sorts by sprite's height
+            area              Sorts by sprite's area
+            circumference     Sorts by sprite's circumference
+        --basic-order <value>  Order
+            ascending         Sorts sprites ascending
+            descending        Sorts sprites descending
+
+  Dimensions:
+  --width <int>               Sets fixed width for texture
+  --height <int>              Sets fixed height for texture
+  --max-width <int>           Sets the maximum width for the texture in auto siz
+e mode, default is 2048
+  --max-height <int>          Sets the maximum height for the texture in auto si
+ze mode, default is 2048
+  --max-size <int>            Sets the maximum width and height for the texture
+in auto size mode, default is 2048
+  --allow-free-size           Allows non power of two textures, creating minimal
+ texture size
+
+  Padding and rotation:
+  --shape-padding <int>       Sets a padding around each shape, value is in pixe
+ls, default is 2
+  --border-padding <int>      Sets a padding around each the border, value is in
+ pixels, default is 2
+  --padding <int>             Sets a padding around each shape, and to the borde
+r, value is in pixels, default is 2
+  --inner-padding <int>       Adds an inner padding around the sprite. The paddi
+ng is added to the sprite's size, default 0
+  --enable-rotation           Enables rotation of sprites (overriding file forma
+t's defaults)
+  --disable-rotation          Disables rotation of sprites (overriding file form
+at's defaults)
+  --trim                      Removes transparent parts of the sprites and store
+s them with
+                              original size. On by default.
+  --no-trim                   Do not trim the images
+  --crop                      Removes tranparent parts of the sprites and stores
+ them as small sprites.
+  --trim-threshold <int>      Trim alpha values under the threshold value 1..255
+, default is 1
+  --disable-auto-alias        Disables automated alias creation
+
+  Graphics optimization (extended only):
+  --opt <pixelformat>         Optimized output for given pixel formats. Supporte
+d formats are:
+                                  RGBA8888
+                                  BGRA8888
+                                  RGBA4444
+                                  RGBA5555
+                                  RGBA5551
+                                  RGB888
+                                  RGB565
+                                  PVRTC4
+                                  PVRTC2
+                                  PVRTC4 (no alpha)
+                                  PVRTC2 (no alpha)
+                                  Alpha
+                                  Alpha+Intensity
+  --dither-none-nn            No dithering, nearest neighbour (non linear color
+reduction, may lead to lower contrast), default
+  --dither-none-linear        No dithering, linear color reduction, better contr
+ast, but may be darker than original
+  --dither-fs                 Enables Floyd-Steinberg dithering without alpha fo
+r color reduction
+  --dither-fs-alpha           Enables Floyd-Steinberg dithering with alpha for c
+olor reduction
+  --dither-atkinson           Enables Atkinson dithering without alpha for color
+ reduction
+  --dither-atkinson-alpha     Enables Atkinson dithering with alpha for color re
+duction
+  --background-color <rrggbb> Set solid background color, default is none which
+is transparent
+                              The value is a tuple of 3 hexadezimal digit pairs,
+ each pair represents
+                              a color channel in order red, green, blue, E.g. ff
+0000 for red, ffffff for white
+  --jpg-quality <value>       Sets the quality for jpg export: -1 for default, 0
+..100 where 0 is low quality
+  --flip-pvr                  Flips PVR files vertically (used for unity framewo
+rk)
+  --premultiply-alpha         Premultiply alpha values (shoud be used with PVRs
+for cocos2d)
+  --dpi <value>               Set dpi for output image (default is 72)
+  --heuristic-mask            Removes equal colored pixels from the border of sp
+rites. Creating a transparency mask
+                              on sprites which use one unique color as transpare
+nt color.
+
+Additional options:
+  --enable-swf-import         Enables import of .swf files (requires pro license
+)
+
+  --reduce-border-artifacts   Removes dark shadows around sprites
+  --extrude <int>             Extrudes the sprites by given value of pixels to f
+ix flickering problems in tile maps
+  --scale <float>             Scales all images before creating the sheet. E.g.
+use 0.5 for half size
+  --scale-mode <mode>         Use mode for scaling:
+                                  fast    - nearest neighbor
+                                  smooth  - with bilinear filtering (default)
+                                  eagle   - improved 2x scaling for pixel art
+                                  scale2x - improved 2x scaling for pixel art
+                                  hq2x    - improved 2x scaling for pixel art
+
+  Additional settings for AndEngine:
+  --andengine-java <filename>          File name for the java definitions
+  --andengine-packagename <name>       Package name for the java definitions
+  --andengine-wraps <clamp|repeat>     Textrue wrapping parameter (see opengl/an
+dengine documentation)
+  --andengine-wrapt <clamp|repeat>     Texture wrapping parameter (see opengl/an
+dengine documentation)
+  --andengine-minfilter <name>         Min filter (nearest, linear, linear_mipma
+p_linear, linear_mipmap_nearest,
+                                                   nearest_mipmap_linear, neares
+t_mipmap_nearest)
+  --andengine-magfilter <name>         Mag filter (linear, nearest)
+
+  Debugging:
+  --shape-debug               Creates boxes around shapes for debugging
+  --verbose                   Be verbose
+  --quiet                     No output except for errors
+  --license-info              Prints information about the currenty linstalled l
+icense
+
+
+Examples:
+
+  TexturePacker assets/*.png
+        creates out.plist and out.png from all png files in assets
+        trimming all files and creating a texture with max. 2048x2048px
+
+  TexturePacker --data main-hd.plist --format cocos2d --sheet main-hd.png assets
+/*.png
+        creates main-hd.plist and main-hd.png from all png files in assets
+        trimming all files and creating a texture with max. 2048x2048px
+
+  TexturePacker --scale 0.5 --max-size 1024 --data main-sd.plist --format cocos2
+d --sheet main-sd.png assets/*.png
+        creates main-sd.plist and main-sd.png from all png files in assets
+        scaling all images to 50%, trimming all files and creating
+        a texture with max. 1024x1024px
+
+
+
+D:\Program Files (x86)\TexturePacker\bin>
