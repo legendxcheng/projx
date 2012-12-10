@@ -35,10 +35,10 @@
 "meta": {
 	"app": "http://www.texturepacker.com",
 	"version": "1.0",
-	"image": "out_a.jpg",
-	"format": "Alpha",
+	"image": "out.jpg",
+	"format": "RGB888",
 	"size": {"w":92,"h":102},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:32cdd967038f4c9324e4466b120e9369$"
+	"smartupdate": "$TexturePacker:SmartUpdate:ccad55475cb23e896ce092e0bbb3876f$"
 }
 }
