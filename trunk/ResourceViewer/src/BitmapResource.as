@@ -48,7 +48,9 @@ package
 		public function load(bytes:ByteArray):void {
 			this.bytes = bytes;
 			completeFlag = false;
-			var xmlStr:String = bytes.readUTF();
+			var jsonStr:String = bytes.readUTF();
+			
+			/*
 			var xml:XML = new XML(xmlStr);
 			resourceID_ = xml.id;
 			anchorPointX_ = xml.anchorPoint.x;
@@ -71,6 +73,7 @@ package
 				totalFrame = 0;
 			size_ = 0;
 			loadFrame();
+			*/
 		}
 		protected function loadFrame():void {
 			if (bitmap.length > keyframeSeq.length) {
