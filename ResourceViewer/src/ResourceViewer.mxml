@@ -10,9 +10,11 @@
 			private var bitmap:BitmapResource;
 			private var currentFrame:int;
 			private var coordinateSprite:Sprite;
+			private var lastSpr:Bitmap;
 			private function init():void {
 				bitmap = new BitmapResource();
 				coordinateSprite = new Sprite();
+				lastSpr = null;
 			}
 			private function read():void {
 				for(var i:int = stageContainer.numChildren - 1; i >= 0; i--) {
@@ -41,12 +43,14 @@
 				this.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			}
 			private function onEnterFrame(e:Event):void {
-				if (currentFrame > 0)
-					stageContainer.removeChild(bitmap.getFrame(currentFrame - 1));
-				else {
+				if (currentFrame == 0)
+				{	
 					stageContainer.addChildAt(coordinateSprite, 0);
 				}
-				stageContainer.addChildAt(bitmap.getFrame(currentFrame), 0);
+				if (lastSpr != null)
+					stageContainer.removeChild(lastSpr);
+				lastSpr = bitmap.getFrame(currentFrame);
+				stageContainer.addChildAt(lastSpr, 0);
 				currentFrame ++;
 			}
 		]]>

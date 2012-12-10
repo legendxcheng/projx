@@ -113,16 +113,16 @@ public class ResourceGenerator {
         	}
         	
         	// output frameName array to json
-        	outputJson.append("\"frameName\":{");
+        	outputJson.append("\"frameName\":[");
         	for (int j = 0; j < frameName.size(); ++j)
         	{
         		if (j > 0) outputJson.append(",");
         		outputJson.append("\"" + frameName.elementAt(j) + "\"");
         	}
-        	outputJson.append("},");
+        	outputJson.append("],");
         	
         	// output frameList
-        	outputJson.append("\"animation\":{");
+        	outputJson.append("\"animation\":[");
         	boolean firstFlag = true;
         	for (int j = 0; j < picPath.size(); ++j)
         	{
@@ -136,7 +136,7 @@ public class ResourceGenerator {
         	}
         	if (emptyRow)
         		break;
-        	outputJson.append("}}");
+        	outputJson.append("]}");
         	out.writeUTF(outputJson.toString());
         	//TODO: use texture packer
         	// TexturePacker --algorithm MaxRects --sheet xxx.jpg --data xxx.json --format json --trim-sprite-names --allow-free-size --opt RGB888 --jpg-quality 80 
@@ -154,7 +154,7 @@ public class ResourceGenerator {
         	int ret = tpinp.read(jsonBuffer);
         	String str = new String(jsonBuffer);
         	out.writeUTF(str);
-            out.writeInt(ret);
+            
             tpinp.close();
             
             //TODO: put 2 jpg file into out
