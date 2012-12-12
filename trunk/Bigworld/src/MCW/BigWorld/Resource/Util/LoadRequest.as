@@ -21,9 +21,9 @@ package MCW.BigWorld.Resource.Util
 		private var _rid:int; // resource id
 		private var _priority :int; // from 0(high) to 9(low)
 		private var _url:String;
-		private var _data:Class;
+		private var _data:*;
 		
-		public function get data():Class
+		public function get data():*
 		{
 			return _data;
 		}
@@ -61,7 +61,7 @@ package MCW.BigWorld.Resource.Util
 		}
 		
 		
-		public function LoadRequest(rtype:int, rid:int, pri:int, target:Class)
+		public function LoadRequest(rtype:int, rid:int, pri:int, target:*)
 		{
 			_rtype = rtype;
 			_priority = pri;

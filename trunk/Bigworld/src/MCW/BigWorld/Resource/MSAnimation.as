@@ -2,6 +2,7 @@ package MCW.BigWorld.Resource
 {
 	import MCW.BigWorld.Resource.Util.ResManager;
 	
+	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -53,12 +54,17 @@ package MCW.BigWorld.Resource
 			frame %= _metaJson.animation.length;
 			var fid:String = _metaJson.frameName[_metaJson.animation[frame]];
 			var tmp:Object = _tpJson.frames[fid];
-			return new Point(_metaJson.anchorX - tmp.spriteSrouceSize.x, _metaJson.anchorY - tmp.spriteSrouceSize.y);
+			/*return new Point(tmp.frame.x + _metaJson.anchorX - tmp.spriteSourceSize.x, 
+				tmp.frame.y + _metaJson.anchorY - tmp.spriteSourceSize.y);
+			*/
+			return new Point( _metaJson.anchorX - tmp.spriteSourceSize.x, 
+				_metaJson.anchorY - tmp.spriteSourceSize.y);
+		
 		}
 
 		public function frameNum():int
 		{
-			return _frames.length;
+			return _metaJson.animation.length;
 		}
 		
 		public function MSAnimation()
@@ -66,10 +72,16 @@ package MCW.BigWorld.Resource
 			_frames = null;
 		}
 		
+		
 		public function getBitmapData(frame:int):BitmapData
 		{
 			// TODO:
-			return null;
+			frame %= _metaJson.animation.length;
+			var fid:String = _metaJson.frameName[_metaJson.animation[frame]];
+			var tmp:Object = _tpJson.frames[fid];
+			var bmd:BitmapData = new BitmapData(tmp.frame.w, tmp.frame.h);
+			bmd.copyPixels(_buffer, new Rectangle(tmp.frame.x, tmp.frame.y, tmp.frame.w, tmp.frame.h), new Point(0, 0));
+			return bmd;
 		}
 		
 		public function clearFrames():void
@@ -101,10 +113,12 @@ package MCW.BigWorld.Resource
 		
 		public function getClipRect(frame:int):Rectangle
 		{
+			
 			frame %= _metaJson.animation.length;
 			var fid:String = _metaJson.frameName[_metaJson.animation[frame]];
 			var tmp:Object = _tpJson.frames[fid];
-			return new Rectangle(tmp.frame.x, tmp.frame.y, tmp.frame.w, tmp.frame.h);
+			return new Rectangle(tmp.spriteSourceSize.x - _metaJson.anchorX, 
+				tmp.spriteSourceSize.y - _metaJson.anchorY, tmp.frame.w, tmp.frame.h);
 		}
 			
 	}
