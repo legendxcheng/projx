@@ -67,7 +67,7 @@ package MCW.BigWorld.Resource.Util
 		/*
 			called by resource related elements
 		*/
-		public function getImgResByID(rid:int, target:Class, pr:int):Class
+		public function getImgResByID(rid:int, target:*, pr:int):*
 		{
 			if (_imgRes[rid] == null)
 			{
@@ -97,7 +97,7 @@ package MCW.BigWorld.Resource.Util
 		/*
 			plug resource to the 4 arrays
 		*/
-		public function plugResource(rtype:int, rid:int, res:Class):void
+		public function plugResource(rtype:int, rid:int, res:*):void
 		{
 			var rt:Array;
 			var i:int;
@@ -134,7 +134,7 @@ package MCW.BigWorld.Resource.Util
 					for (i = 0; i< rt.length; ++i)
 					{
 						// inform all entities that ever requested for this resource
-						rt.onResLoaded(rtype, rid);
+						rt[i].onResLoaded(rtype, rid);
 					}
 					
 				}

@@ -1,11 +1,13 @@
 package MCW.BigWorld.Display.Base
 {
+	import MCW.BigWorld.Layers.MainLayer;
 	import MCW.BigWorld.Resource.IResource;
 	import MCW.BigWorld.Resource.MSAnimation;
 	
 	import flash.display.BitmapData;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 
 	/*
 		Logic display elements
@@ -46,14 +48,27 @@ package MCW.BigWorld.Display.Base
 		
 		public function MSprite()
 		{
-
+			super();
+			_loop = true;
+			_isPlaying = true;
 		}
 		
 		public function update():void
 		{
 			if (!_isPlaying)
 				return;
+			if (!canDisplay())
+				return;
 			++_curFrame;
+			_matrixChanged = true;
+			
+			if (_needAdvDraw)
+			{
+				if (_aBuf != null)
+					_aBuf.dispose();
+				_aBuf = _animation.getBitmapData(_curFrame);
+			}
+			
 			if (_curFrame == _animation.frameNum())
 			{
 				if (_loop)
@@ -67,21 +82,31 @@ package MCW.BigWorld.Display.Base
 				}
 				
 			}
+			
 		}
 		
 		
 		override public function getMatrix():Matrix
 		{
+
+			
 			if (_matrixChanged)
 			{	
 				
-				_matrix = new Matrix();
-				
-				// may be _x, _y
-				var tp:Point = _animation.getAnchorPoint(_curFrame);
-				_matrix.translate(-_x + tp.x, -_y + tp.y);
+				_matrix = new Matrix();	
+				_matrix.scale(_scaleX, _scaleY);
 				_matrix.rotate(_rotation);
-				_matrix.scale(_scaleX, _scaleY);	
+				var tp:Point = _animation.getAnchorPoint(_curFrame);
+				//_matrix.transformPoint(tp);
+				tp = _matrix.transformPoint(tp);
+
+				// _matrix translate (-fx-ax+sssx+x, -fy-ay+sssx+y)
+				_matrix.translate(_x - tp.x, _y - tp.y);
+
+				
+				//_matrix.translate(20, 20);
+				
+					
 				_matrixChanged = false;	
 				
 			}
@@ -103,11 +128,58 @@ package MCW.BigWorld.Display.Base
 			if (!_visible)
 				return;
 			
-			buffer.draw(_animation.buffer, getMatrix(), null, null, _animation.getClipRect(_curFrame), false);
+			if (_needAdvDraw)
+			{
+				/*
+				var rect:Rectangle;
+				//rect = _animation.getClipRect(_curFrame);
+				rect = _aBuf.rect;
+				
+				// calc new rectangle(after rotation)
+				
+				// four points
+				var p1 :Point;
+				var p2: Point;
+				var p3:Point;
+				var p4:Point;
+				var ma:Matrix = new Matrix();
+				ma.rotate(_rotation);
+				ma.scale(_scaleX, scaleY);
+				p1 = ma.transformPoint(new Point(rect.x, rect.y));
+				p2 = ma.transformPoint(new Point(rect.x, rect.y + rect.height));
+				p3 = ma.transformPoint(new Point(rect.x + rect.width, rect.y));
+				p4 = ma.transformPoint(new Point(rect.x + rect.width, rect.y + rect.height));
+				
+				var xmin:Number, xmax:Number, ymin:Number, ymax:Number;
+				xmin = Math.min(p1.x, p2.x, p3.x, p4.x);
+				ymin = Math.min(p1.y, p2.y, p3.y, p4.y);
+				xmax = Math.max(p1.x, p2.x, p3.x, p4.x);
+				ymax = Math.max(p1.y, p2.y, p3.y, p4.y);
+				rect.x = xmin + _x;
+				rect.y = ymin + _y;
+				rect.width = xmax - xmin;
+				rect.height = ymax - ymin;
+				
+				rect.width *= _scaleX;
+				rect.height *= _scaleY;
+				rect.x = _x + rect.x * _scaleX;
+				rect.y = _y + rect.y * _scaleY;
+				
+				*/
+				buffer.draw(_aBuf, getMatrix(), null, null, null, true);
+			}
+			else // basic draw, use copyPixels
+			{
+				
+			}
 			
+						
 			
+			if (_debug)
+				drawAnchor(buffer);
 		}
 		
+
 		
 		
 		

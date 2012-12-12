@@ -13,9 +13,9 @@ package MCW.BigWorld.Resource.Parser
 
 		
 		// parse image resource
-		static public function parseImgRes(rid:int, data:Class):Class
+		static public function parseImgRes(rid:int, data:*):*
 		{
-			if (rid >= 20000 && rid <= 39999)// animation
+			if (rid >= 20000 && rid <= 39999 || rid == 1000)// animation
 			{
 				var ap:AnimParser = new AnimParser(rid, data);
 				ap.parseResource();
@@ -25,7 +25,7 @@ package MCW.BigWorld.Resource.Parser
 			return null;
 		}
 		
-		static public function parseRes(rtype:int, rid:int, data:Class):Class
+		static public function parseRes(rtype:int, rid:int, data:*):*
 		{
 			// TODO: parse res due to different types of resources
 			switch (rtype)	

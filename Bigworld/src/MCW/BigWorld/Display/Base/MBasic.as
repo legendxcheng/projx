@@ -20,16 +20,32 @@ package MCW.BigWorld.Display.Base
 		protected var _visible:Boolean;
 		protected var _alpha:Boolean;
 
+		protected var _aBuf:BitmapData;// buffer for advant draw
+		
 		protected var _matrix:Matrix;
 		
 		protected var _matrixChanged:Boolean;
 		
+		protected var _debug:Boolean;
+		
+		protected var _needAdvDraw:Boolean;
+		
 		public function MBasic()
 		{
+			_visible = true;
 			_matrix = new Matrix();
 			_matrixChanged = false;
+			_scaleX = _scaleY = 1.0;
+			_rotation = 0;
+			_debug = false;
+			_needAdvDraw = false;
 		}
 		
+		public function set debug(value:Boolean):void
+		{
+			_debug = value;
+		}
+
 		public function canDisplay():Boolean
 		{
 			return true;
@@ -58,6 +74,7 @@ package MCW.BigWorld.Display.Base
 		
 		public function set rotation(value:Number):void
 		{
+			_needAdvDraw = true;
 			_rotation = value;
 			_matrixChanged = true;
 		}
@@ -69,6 +86,7 @@ package MCW.BigWorld.Display.Base
 		
 		public function set y(value:int):void
 		{
+			
 			_y = value;
 			_matrixChanged = true;
 		}
@@ -86,11 +104,13 @@ package MCW.BigWorld.Display.Base
 		
 		public function get scaleY():Number
 		{
+			
 			return _scaleY;
 		}
 		
 		public function set scaleY(value:Number):void
 		{
+			_needAdvDraw = true;
 			_scaleY = value;
 			_matrixChanged = true;
 		}
@@ -103,8 +123,21 @@ package MCW.BigWorld.Display.Base
 		
 		public function set scaleX(value:Number):void
 		{
+			_needAdvDraw = true;
 			_scaleX = value;
 			_matrixChanged = true;
+		}
+		
+		/*
+			draw anchor point for debug
+		*/
+		public function drawAnchor(buffer:BitmapData):void
+		{
+			for (var i:int =  - 50; i <=   50; ++i)
+			{
+				buffer.setPixel(i + _x, _y, 0xFF0000);
+				buffer.setPixel(_x, _y + i, 0xFF0000);
+			}
 		}
 		
 		public function getMatrix():Matrix

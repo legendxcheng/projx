@@ -29,7 +29,7 @@ package MCW.BigWorld.Resource.Parser
 		private var _rgbBuf:BitmapData;
 		private var _aBuf:BitmapData;
 		
-		public function AnimParser(rid:int, data:Class)
+		public function AnimParser(rid:int, data:*)
 		{
 			_rid = rid;
 			_data = data as ByteArray;
@@ -126,7 +126,7 @@ package MCW.BigWorld.Resource.Parser
 			
 			// after merge, plug _anim to resManager
 			var resMgr:ResManager = ResManager.getInstance();
-			resMgr.plugResource(ResManager.RES_TYPE_IMAGE, _rid, _anim as Class);
+			resMgr.plugResource(ResManager.RES_TYPE_IMAGE, _rid, _anim);
 		}
 	}
 }

@@ -3,6 +3,11 @@ package MCW.BigWorld.Logic
 	import MCW.BigWorld.Layers.BgLayer;
 	import MCW.BigWorld.Layers.MainLayer;
 	import MCW.BigWorld.Layers.UILayer;
+	
+	import MCW.BigWorld.Resource.Util.ResourceLoader;
+	
+	
+	
 
 	/*
 		Singleton class that governs all logic related issues.
@@ -48,14 +53,19 @@ package MCW.BigWorld.Logic
 		*/
 		public function updtate():void
 		{
+			ResourceLoader.getInstance().startALoading();
 			
 		}
 		
 		public function ControlCenter()
 		{
+			
 			_bgLayer = new BgLayer();
 			_mainLayer = new MainLayer();
 			_uiLayer = new UILayer();
+			
+			
+			
 		}
 	}
 }

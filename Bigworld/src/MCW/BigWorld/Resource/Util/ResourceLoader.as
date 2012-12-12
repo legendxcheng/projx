@@ -43,8 +43,13 @@ package MCW.BigWorld.Resource.Util
 			
 			called every frame by ControlCenter's update function
 		*/
-		private function startALoading():void
+		public function startALoading():void
 		{
+			if (_pending.length == 0)
+			{
+				return;
+			}
+			
 			if (_loadingNum < _maxLoadingNum)
 			{
 				_pending.sort(sortOnPriority);
@@ -74,7 +79,7 @@ package MCW.BigWorld.Resource.Util
 			@rid resource id
 			@pr priority
 		*/
-		public function addLoadRequest(rtype:int, rid: int, pr: int, target:Class):void
+		public function addLoadRequest(rtype:int, rid: int, pr: int, target:*):void
 		{
 			// tmp url
 			var lr:LoadRequest = new LoadRequest(rtype, rid, pr, target);
@@ -92,7 +97,7 @@ package MCW.BigWorld.Resource.Util
 		
 		public function ResourceLoader()
 		{
-			
+			_pending = new Array(); // init pending list
 		}
 	}
 
