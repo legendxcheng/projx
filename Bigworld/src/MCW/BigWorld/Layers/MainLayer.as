@@ -49,9 +49,9 @@ package MCW.BigWorld.Layers
 			tt.requestResource();
 			tt.x = Math.random() * 1200;
 			tt.y = Math.random() * 600;
-			tt.scaleX = Math.random() * 3;
+			/*tt.scaleX = Math.random() * 3;
 			tt.scaleY = Math.random() * 3;
-			tt.rotation = Math.random() * Math.PI * 2;
+			tt.rotation = Math.random() * Math.PI * 2;*/
 			tt.debug = true;
 			_members.push(tt);
 			
@@ -105,8 +105,6 @@ package MCW.BigWorld.Layers
 				}
 			}
 			lastFrameMill = time;
-			
-			
 			
 			ControlCenter.getInstance().updtate();
 			// TODO: iterate all elements, update all of them, then draw all of them onto the graphics

@@ -170,7 +170,10 @@ package MCW.BigWorld.Display.Base
 			}
 			else // basic draw, use copyPixels
 			{
-				
+				var tt:Point = _animation.getBasicPoint(_curFrame);
+				tt.x += _x;
+				tt.y += _y;
+				buffer.copyPixels(_animation.buffer, _animation.getBasicRect(_curFrame), tt, null, null, true);
 			}
 			
 						

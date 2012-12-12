@@ -101,15 +101,35 @@ package MCW.BigWorld.Resource
 			_frames.push(fra);
 		}
 		
+		override public function getType():int
+		{
+			return ResManager.RES_TYPE_IMAGE;
+		}
+		
 		override public function release():void
 		{
 			//TODO
 		}
 		
-		override public function getType():int
+		
+		public function getBasicRect(frame:int):Rectangle
 		{
-			return ResManager.RES_TYPE_IMAGE;
+			frame %= _metaJson.animation.length;
+			var fid:String = _metaJson.frameName[_metaJson.animation[frame]];
+			var tmp:Object = _tpJson.frames[fid];
+			return new Rectangle(tmp.frame.x, tmp.frame.y, tmp.frame.w, tmp.frame.h);
 		}
+		
+		public function getBasicPoint(frame:int):Point
+		{
+			frame %= _metaJson.animation.length;
+			var fid:String = _metaJson.frameName[_metaJson.animation[frame]];
+			var tmp:Object = _tpJson.frames[fid];
+			return new Point(tmp.spriteSourceSize.x - _metaJson.anchorX, tmp.spriteSourceSize.y - _metaJson.anchorY);
+			
+		}
+		
+		
 		
 		public function getClipRect(frame:int):Rectangle
 		{

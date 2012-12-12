@@ -108,6 +108,8 @@ package MCW.BigWorld.Display.Base
 			return _scaleY;
 		}
 		
+	
+		
 		public function set scaleY(value:Number):void
 		{
 			_needAdvDraw = true;
