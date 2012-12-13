@@ -83,6 +83,7 @@ package Logic
 		public function onFileLoadCompleted(e:Event):void
 		{
 			var ba:ByteArray = e.target.data as ByteArray;
+			/*
 			var xmlL:int = ba.readInt();
 			var xmlStr:String = ba.readUTF();
 			var xml:XML = XML(xmlStr);
@@ -96,32 +97,91 @@ package Logic
 			{
 				_mapList.push(item.toString());
 			}
+			*/
+			var jsonStr:String = ba.readUTF();
+			var json:Object = JSON.parse(jsonStr);
+			_nyMax = json.nyMax;
+			_nxMax = json.nxMax;
+			_nxOffset = json.nxOffset;
+			_gridNum = json.gridNum;
+			_mapList = new Array();
+			for each(var item:String in json.mapList.pic)
+			{
+				_mapList.push(item.toString());
+			}
+			
 			var i: int;
+			var tmp:int;
+			var tmp2:int;
 			for (i = 0; i < _gridNum; ++i)
 			{
-				_pArea[i] = ba.readBoolean();
+				if (i % 8 == 0)
+				{
+					tmp = ba.readByte();
+				}
+				tmp2 = (1 << (7- i % 8));
+				if ((tmp & tmp2) > 0)
+				{
+					_pArea[i] = true;	
+				}
+				else _pArea[i] = false;
+				
 			}
 			for (i = 0; i < _gridNum; ++i)
 			{
-				_tArea[i] = ba.readBoolean();	
+				if (i % 8 == 0)
+				{
+					tmp = ba.readByte();
+				}
+				tmp2 = (1 << (7- i % 8));
+				if ((tmp & tmp2) > 0)
+				{
+					_tArea[i] = true;	
+				}
+				else _tArea[i] = false;
+			
 			}
 			this.reset();
 		}
 		
 		public function exportFile():void
 		{
-			var xml:String = this.generateXML();
+			var json:String = this.generateJson();
 			var ba:ByteArray = new ByteArray();
-			ba.writeInt(xml.length);
-			ba.writeUTF(xml);
+			ba.writeUTF(json);
 			var i :int;
-			for (i = 0; i < _gridNum; ++i)
+			var tmp :int = 0;
+			var nNum:int = Math.ceil(_gridNum / 8) * 8;
+			for (i = 0; i < nNum; ++i)
 			{
-				ba.writeBoolean(_pArea[i]);
+				
+				tmp = tmp << 1;
+				if (i < _gridNum)
+				{
+					if (_pArea[i])
+						tmp += 1;
+				}
+				
+				if (i % 8 == 7)
+				{
+					ba.writeByte(tmp);	
+					tmp = 0;
+				}
+				
 			}
-			for (i = 0; i < _gridNum; ++i)
+			tmp = 0;
+			for (i = 0; i < nNum; ++i)
 			{
-				ba.writeBoolean(_tArea[i]);
+				tmp = tmp << 1;
+				if (i < _gridNum)
+					if (_tArea[i])
+						tmp += 1;
+				
+				if (i % 8 == 7)
+				{
+					ba.writeByte(tmp);	
+					tmp = 0;
+				}
 			}
 			
 			var file:FileReference = new FileReference();
@@ -145,6 +205,32 @@ package Logic
 			ret += _mapFLFrame.generateXML();
 			ret += "</map>";
 			return ret;
+		}
+		
+		private function generateJson():String
+		{
+			var ret:Object = new Object();;
+			ret.nxMax = _nxMax;
+			ret.nyMax = _nyMax;
+			ret.nxOffset = _nxOffset;
+			ret.gridNum = _gridNum;
+			ret.mapList = _mapFLFrame.generateJson();
+			/*
+			ret = "<map>";
+			var tmps:String;
+			tmps = "<nxMax>" + _nxMax + "</nxMax>";
+			ret += tmps;
+			tmps = "<nyMax>" + _nyMax + "</nyMax>";
+			ret += tmps;
+			tmps = "<nxOffset>" + _nxOffset + "</nxOffset>";
+			ret += tmps;
+			tmps = "<gridNum>" + _gridNum + "</gridNum>";
+			ret += tmps;
+			ret += _mapFLFrame.generateXML();
+			ret += "</map>";
+			*/
+			
+			return JSON.stringify(ret);
 		}
 		
 		public function get mapName():String
