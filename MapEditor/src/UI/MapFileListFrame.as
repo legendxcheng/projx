@@ -74,6 +74,23 @@ package UI{
 			}
 			ret += "</mapList>";
 			return ret;
+		}
+		public function generateJson():Object
+		{
+			var ret:Object = new Object();
+			ret.pic = new Array();
+			for (var i:int = 0; i<16; ++i)
+			{
+				var kk:String = fileList[i].getText();
+				if (kk.length > 0)
+				{
+					ret.pic.push(kk);
+					
+				}	
+				else break;
+			}
+			
+			return ret;
 		}	
 	}
 }

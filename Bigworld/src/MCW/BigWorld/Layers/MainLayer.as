@@ -91,6 +91,7 @@ package MCW.BigWorld.Layers
 		
 		private function onEnterFrame(e:Event):void
 		{
+			/*
 			var time:int = flash.utils.getTimer();
 			if (lastFrameMill > 0)
 			{
@@ -105,7 +106,7 @@ package MCW.BigWorld.Layers
 				}
 			}
 			lastFrameMill = time;
-			
+			*/
 			ControlCenter.getInstance().updtate();
 			// TODO: iterate all elements, update all of them, then draw all of them onto the graphics
 			for (var i:int = 0; i < _members.length; ++i)
