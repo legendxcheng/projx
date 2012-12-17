@@ -95,6 +95,36 @@ package MCW.BigWorld.Resource.Util
 		}
 		
 		/*
+		called by resource related elements
+		*/
+		public function getDescResByID(rid:int, target:*, pr:int):*
+		{
+			if (_desRes[rid] == null)
+			{
+				/* TODO: request the resource from loader
+				register callback function using class
+				*/
+				if (_desResRef[rid] == null)
+				{
+					_desResRef[rid] = initResRef();
+				}
+				_desResRef[rid].reqTargets.push(target);
+				if (!_desResRef[rid].isLoading)
+				{
+					_resLoader.addLoadRequest(ResManager.RES_TYPE_DESC, rid, pr, target);
+					_desResRef[rid].isLoading = true;
+				}
+				
+				return null;
+			}
+			else
+			{
+				++_desResRef[rid].ref;
+				return _desRes[rid];
+			}
+		}
+		
+		/*
 			plug resource to the 4 arrays
 		*/
 		public function plugResource(rtype:int, rid:int, res:*):void
@@ -116,7 +146,7 @@ package MCW.BigWorld.Resource.Util
 					for (i = 0; i< rt.length; ++i)
 					{
 						// inform all entities that ever requested for this resource
-						rt.onResLoaded(rtype, rid);
+						rt[i].onResLoaded(rtype, rid);
 					}
 					
 				}

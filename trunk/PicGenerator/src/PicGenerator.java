@@ -46,18 +46,18 @@ public class PicGenerator {
 		if (flag == 1) //  low
 		{
 			ret += "{\"rid\":" + lowid + ",\"quality\": \"low\"," + "\"lowid\":" + lowid
-					+ "\"stdid\":" + stdid + "\"highid\":" + highid + "}";
+					+ ",\"stdid\":" + stdid + ",\"highid\":" + highid + "}";
 			
 		}
 		else if (flag == 2) // std
 		{
 			ret += "{\"rid\":" + stdid + ",\"quality\": \"std\"," + "\"lowid\":" + lowid
-					+ "\"stdid\":" + stdid + "\"highid\":" + highid + "}";
+					+ ",\"stdid\":" + stdid + ",\"highid\":" + highid + "}";
 		}
 		else if (flag == 3)// high
 		{
 			ret += "{\"rid\":" + highid + ",\"quality\": \"high\"," + "\"lowid\":" + lowid
-					+ "\"stdid\":" + stdid + "\"highid\":" + highid + "}";
+					+ ",\"stdid\":" + stdid + ",\"highid\":" + highid + "}";
 		}
 		
 		return ret;

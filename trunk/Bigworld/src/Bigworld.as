@@ -12,9 +12,11 @@ package
 		public function Bigworld()
 		{
 			var cc:ControlCenter = ControlCenter.getInstance();
+			
 			addChild(cc.bgLayer);
 			addChild(cc.mainLayer);
 			addChild(cc.uiLayer);
+			cc.bgLayer.requestResource();
 
 		}
 	}

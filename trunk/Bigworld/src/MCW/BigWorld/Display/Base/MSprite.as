@@ -1,6 +1,7 @@
 package MCW.BigWorld.Display.Base
 {
 	import MCW.BigWorld.Layers.MainLayer;
+	import MCW.BigWorld.Logic.ControlCenter;
 	import MCW.BigWorld.Resource.IResource;
 	import MCW.BigWorld.Resource.MSAnimation;
 	
@@ -21,12 +22,19 @@ package MCW.BigWorld.Display.Base
 		protected var _loop: Boolean;
 		protected var _curFrame:int;
 		protected var _isPlaying :Boolean;
+		protected var _dirty:Boolean;
 		
 		// matrix related properties
 		
 		protected var _animation:MSAnimation;
 
 		
+
+		public function set curFrame(value:int):void
+		{
+			_dirty = true;
+			_curFrame = value;
+		}
 
 		override public function canDisplay():Boolean
 		{
@@ -55,11 +63,17 @@ package MCW.BigWorld.Display.Base
 		
 		public function update():void
 		{
-			if (!_isPlaying)
+			updateAnim();
+		}
+		
+		protected function updateAnim():void
+		{
+			if (!_isPlaying && !_dirty)
 				return;
 			if (!canDisplay())
 				return;
-			++_curFrame;
+			if (_isPlaying)
+				++_curFrame;
 			_matrixChanged = true;
 			
 			if (_needAdvDraw)
@@ -82,6 +96,8 @@ package MCW.BigWorld.Display.Base
 				}
 				
 			}
+			
+			_dirty = false;
 			
 		}
 		
@@ -121,7 +137,7 @@ package MCW.BigWorld.Display.Base
 		}
 		
 		
-		override public function draw(buffer:BitmapData):void
+		override public function draw(buffer:BitmapData, camX:int, camY:int):void
 		{
 			if (!canDisplay())
 				return;
@@ -171,8 +187,8 @@ package MCW.BigWorld.Display.Base
 			else // basic draw, use copyPixels
 			{
 				var tt:Point = _animation.getBasicPoint(_curFrame);
-				tt.x += _x;
-				tt.y += _y;
+				tt.x += _x - camX;
+				tt.y += _y - camY;
 				buffer.copyPixels(_animation.buffer, _animation.getBasicRect(_curFrame), tt, null, null, true);
 			}
 			

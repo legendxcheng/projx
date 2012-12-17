@@ -16,7 +16,7 @@ package MCW.BigWorld.Resource
 		}
 		
 		/*
-		release this resource
+			release this resource
 		*/
 		public function release():void
 		{
