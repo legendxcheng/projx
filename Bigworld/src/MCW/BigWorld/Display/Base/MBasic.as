@@ -61,7 +61,7 @@ package MCW.BigWorld.Display.Base
 			
 		}
 		
-		public function draw(buffer:BitmapData):void
+		public function draw(buffer:BitmapData, camX:int, camY:int):void
 		{
 			
 		}

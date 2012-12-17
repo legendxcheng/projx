@@ -25,6 +25,34 @@ package MCW.BigWorld.Layers
 		private var spriteNum:int;
 		private var lastFrameMill:int;
 		
+		private var _mainChar:BGChar; // mainCharacter
+		
+		/*
+			Mouse click handler			
+		*/
+		private function onMouseClick(e:MouseEvent):void
+		{
+			var cc:ControlCenter = ControlCenter.getInstance();
+			var tx:int = e.stageX + cc.camX;
+			var ty:int = e.stageY + cc.camY ;
+			var tmp:Number = Math.sin(35/180 * Math.PI);
+			var a:Number = tmp/Math.sqrt(1+tmp*tmp);
+			var b:Number = 1/Math.sqrt(1+tmp*tmp);
+			var nx:Number = (-ty / a + tx / b) / 2;
+			var ny:Number = (tx / b + ty / a) / 2;
+			var xind :int = Math.floor(nx / cc.gridSideLen);
+			var yind :int = Math.floor(ny / cc.gridSideLen);
+			
+			
+			var cy : Number = yind * cc.gridSideLen * a - xind * cc.gridSideLen * a; // circle center x
+			var cx : Number = xind * cc.gridSideLen * b + yind * cc.gridSideLen * b + cc.gridSideLen * b; // circle center y
+			
+			trace(e.stageX + "," + e.stageY);
+			trace(xind + "," + yind);
+			trace(cx + "," + cy);
+			_mainChar.setMoveTarget(cx, cy);
+		}
+		
 		public function MainLayer()
 		{
 			this.addEventListener(Event.ENTER_FRAME, onEnterFrame);
@@ -36,24 +64,25 @@ package MCW.BigWorld.Layers
 			
 			spriteNum = 0;
 			lastFrameMill = -1;
-		
 			
+			addMainCharacterTest();
 			
+			this.addEventListener(MouseEvent.CLICK, onMouseClick);
 			
 		}
 		
-		public function addTest():void
+		public function addMainCharacterTest():void
 		{
-			var tt:BGChar = new BGChar(1);
+			_mainChar = new BGChar(1000);
 			++spriteNum;
-			tt.requestResource();
-			tt.x = Math.random() * 1200;
-			tt.y = Math.random() * 600;
-			/*tt.scaleX = Math.random() * 3;
-			tt.scaleY = Math.random() * 3;
-			tt.rotation = Math.random() * Math.PI * 2;*/
-			tt.debug = true;
-			_members.push(tt);
+			_mainChar.requestResource();
+			_mainChar.x = 300;
+			_mainChar.y = 200;
+			
+			_mainChar.scaleX  =0.8;
+			_mainChar.scaleY = 0.8;
+			
+			_members.push(_mainChar);
 			
 		}
 		
@@ -83,7 +112,8 @@ package MCW.BigWorld.Layers
 			for (var i:int = 0; i < _members.length; ++i)
 			{
 				var ele:MBasic = _members[i] as MBasic;
-				ele.draw(_buffer);
+				ele.draw(_buffer, 
+					ControlCenter.getInstance().camX, ControlCenter.getInstance().camY);
 				
 			}
 		}
@@ -101,7 +131,7 @@ package MCW.BigWorld.Layers
 					this.addTest();
 				}
 				else
-				{
+				{	
 					trace(spriteNum);
 				}
 			}

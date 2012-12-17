@@ -8,7 +8,7 @@ package MCW.BigWorld.Display.Base
 	public interface IDisplay
 	{
 		// draw， called by MainLayer every frame
-		function draw(_buffer:BitmapData):void;
+		function draw(_buffer:BitmapData, camX:int, camY:int):void;
 		
 		// Resource load
 		function onResLoaded(rtype:int, rid:int):void;
