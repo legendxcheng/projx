@@ -20,6 +20,7 @@ package MCW.BigWorld.Logic
 		*/
 		private var _camX:int;
 		private var _camY:int;
+		private var _camMoved:Boolean;
 		
 		private var _bgLayer:BgLayer;
 		private var _mainLayer:MainLayer;
@@ -28,6 +29,16 @@ package MCW.BigWorld.Logic
 		private var _gridSideLen:int;
 		
 		static private var _instance:ControlCenter;
+
+		public function get camMoved():Boolean
+		{
+			return _camMoved;
+		}
+
+		public function set camMoved(value:Boolean):void
+		{
+			_camMoved = value;
+		}
 
 		public function get gridSideLen():int
 		{
@@ -81,9 +92,11 @@ package MCW.BigWorld.Logic
 		
 		/*
 			function called every frame, the main entry for updates
+			this function is the [first] function to be called in a update loop
 		*/
 		public function updtate():void
 		{
+			_camMoved = false;	
 			ResourceLoader.getInstance().startALoading();
 			
 		}
