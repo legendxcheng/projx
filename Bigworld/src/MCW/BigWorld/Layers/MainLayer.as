@@ -145,6 +145,8 @@ package MCW.BigWorld.Layers
 				ele.update();
 			}
 			draw();
+			
+			ControlCenter.getInstance().bgLayer.update();
 		}
 		
 		

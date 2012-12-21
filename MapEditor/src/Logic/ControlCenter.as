@@ -215,6 +215,8 @@ package Logic
 			ret.nxOffset = _nxOffset;
 			ret.gridNum = _gridNum;
 			ret.mapList = _mapFLFrame.generateJson();
+			ret.width = _mapW;
+			ret.height = _mapH;
 			/*
 			ret = "<map>";
 			var tmps:String;
