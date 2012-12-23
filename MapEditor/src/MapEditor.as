@@ -31,6 +31,7 @@ package {
 		
 		public function MapEditor(){
 			
+			
 			AsWingManager.initAsStandard( this);
 			initToolFrame();
 			initAttributeFrame();
