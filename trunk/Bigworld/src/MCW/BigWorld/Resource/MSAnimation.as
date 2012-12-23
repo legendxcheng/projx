@@ -103,7 +103,7 @@ package MCW.BigWorld.Resource
 		
 		override public function getType():int
 		{
-			return ResManager.RES_TYPE_IMAGE;
+			return ResManager.RES_IMG_ANIM;
 		}
 		
 		override public function release():void

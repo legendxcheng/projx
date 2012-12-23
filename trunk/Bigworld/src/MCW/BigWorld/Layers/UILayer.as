@@ -1,8 +1,8 @@
 package MCW.BigWorld.Layers
 {
 	import MCW.BigWorld.Logic.ControlCenter;
-	
-	import UI.MSButtonA;
+	import MCW.UI.MButtonA;
+	import MCW.UI.MRecvTaskWindow;
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -18,27 +18,20 @@ package MCW.BigWorld.Layers
 	public class UILayer extends Sprite
 	{
 		private var cc:ControlCenter;
-		private var attrFrame:JWindow;
+		private var recvTaskWindow:MRecvTaskWindow;
+
 		public function UILayer()
 		{
 			super();
 			
 			AsWingManager.initAsStandard( this);
 			UIManager.setLookAndFeel(new org.aswing.skinbuilder.SkinBuilderLAF());
-			attrFrame = new JWindow();
-			attrFrame.setToolTipText("dfsdf");
 			
-			attrFrame.setSizeWH(240, 110);
-			attrFrame.x = 50;
-			attrFrame.y = 120;
-			attrFrame.width = 1000;
-			attrFrame.height = 500;
-			attrFrame.show();
-			attrFrame.getContentPane().setLayout(new EmptyLayout());
-			var tmp = new MSButtonA(150, "战斗交给我！");
-			attrFrame.getContentPane().append(tmp);
+			recvTaskWindow = new MRecvTaskWindow();
+			recvTaskWindow.show();
 			
-			attrFrame.addEventListener(MouseEvent.CLICK, _onMouseClick);
+		
+			
 			
 		}
 		

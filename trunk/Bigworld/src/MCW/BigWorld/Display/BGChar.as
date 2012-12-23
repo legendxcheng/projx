@@ -133,7 +133,6 @@ package MCW.BigWorld.Display
 				this.curFrame = _curDir;
 				
 			}
-			trace(_curFrame);
 			updateAnim();
 		}
 		
@@ -147,27 +146,30 @@ package MCW.BigWorld.Display
 		override public function requestResource():void
 		{
 			var resMgr:ResManager = ResManager.getInstance();
-			_desc = resMgr.getDescResByID(1000, this, 1) as MSSimpleDesc;
+			_desc = resMgr.getResource(ResManager.RES_DESC_BWCHAR, 1000, this, 1) as MSSimpleDesc;
 		}
 		
 		override public function onResLoaded(rtype:int, rid:int):void
 		{
-			if (rtype == ResManager.RES_TYPE_DESC && rid == _ctype) //character desc
+			if (rtype == ResManager.RES_DESC_BWCHAR && rid == _ctype) //character desc
 			{
-				_desc = ResManager.getInstance().getDescResByID(rid, this, 1);
+				_desc = ResManager.getInstance().getResource(rtype, rid, this, 1);
 				for (var i:int = 0; i < _desc.metaJson.moveAnim.length; ++i)
 				{
-					_dirAnim[i] = ResManager.getInstance().getImgResByID(_desc.metaJson.moveAnim[i], this, 1);
+					_dirAnim[i] = ResManager.getInstance().getResource(ResManager.RES_IMG_ANIM,
+						_desc.metaJson.moveAnim[i], this, 1);
 				}
-				_stopAnim = ResManager.getInstance().getImgResByID(_desc.metaJson.stopAnim, this, 1);
+				_stopAnim = ResManager.getInstance().getResource(ResManager.RES_IMG_ANIM,
+					_desc.metaJson.stopAnim, this, 1);
 				
 				
 			}
-			if (rtype == ResManager.RES_TYPE_IMAGE) // temp
+			if (rtype == ResManager.RES_IMG_ANIM) // temp
 			{
 				if (rid == _desc.metaJson.stopAnim)
 				{
-					_stopAnim = ResManager.getInstance().getImgResByID(_desc.metaJson.stopAnim, this, 1);
+					_stopAnim = ResManager.getInstance().getResource(ResManager.RES_IMG_ANIM,
+						_desc.metaJson.stopAnim, this, 1);
 				}
 				else
 				{
@@ -175,7 +177,8 @@ package MCW.BigWorld.Display
 					{
 						if (_desc.metaJson.moveAnim[i] == rid)
 						{
-							_dirAnim[i] = ResManager.getInstance().getImgResByID(_desc.metaJson.moveAnim[i], this, 1);	
+							_dirAnim[i] = ResManager.getInstance().getResource(ResManager.RES_IMG_ANIM,
+								_desc.metaJson.moveAnim[i], this, 1);	
 							break;
 						}
 						
