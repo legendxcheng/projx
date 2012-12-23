@@ -31,21 +31,7 @@ package MCW.BigWorld.Resource.Util
 		public function get url():String
 		{
 			_url = "F:\\MCW\\projx\\Resources\\";
-			switch (_rtype)
-			{
-				case ResManager.RES_TYPE_DESC:
-					_url += "desc_" + _rid + ".res";
-					break;
-				case ResManager.RES_TYPE_IMAGE:
-					_url += "img_" + _rid + ".res";
-					break;
-				case ResManager.RES_TYPE_SCRIPT:
-					_url += "script_" + _rid + ".res";
-					break;
-				case ResManager.RES_TYPE_SOUND:
-					_url += "snd_" + _rid + ".res";
-					break;
-			}
+			_url += _rtype.toString() + "_" + _rid.toString() + ".res";
 			return _url;
 		}
 

@@ -10,7 +10,7 @@ package MCW.BigWorld.Resource.Parser
 		public function ResourceParser()
 		{
 		}
-
+/*
 		// parse image resource
 		static public function parseDescRes(rid:int, data:*):*
 		{
@@ -38,7 +38,12 @@ package MCW.BigWorld.Resource.Parser
 		// parse image resource
 		static public function parseImgRes(rid:int, data:*):*
 		{
-			if (rid >= 20000 && rid <= 39999)// animation
+			if (rid >= 0 && rid <= 9999)
+			{
+				var pp:PicParser = new PicParser(rid, data);
+				pp.parseResource();
+			}
+			else if (rid >= 20000 && rid <= 39999)// animation
 			{
 				var ap:AnimParser = new AnimParser(rid, data);
 				ap.parseResource();
@@ -56,32 +61,100 @@ package MCW.BigWorld.Resource.Parser
 			}
 			return null;
 		}
-		
+*/
 		static public function parseRes(rtype:int, rid:int, data:*):*
 		{
 			// TODO: parse res due to different types of resources
 			switch (rtype)	
 			{
-				case ResManager.RES_TYPE_IMAGE:
+				case ResManager.RES_DESC_BWCHAR:
 				{
-					return parseImgRes(rid, data);
+					var sp:DescSimpleParser = new DescSimpleParser(rtype, rid, data);
+					sp.parseResource();
+					sp = null;
 				}
 					break;
-				case ResManager.RES_TYPE_SOUND:
-				{
-					
-				}
-					break;
-				case ResManager.RES_TYPE_DESC:
-				{
-					return parseDescRes(rid, data);
-				}
-					break;
-				case ResManager.RES_TYPE_SCRIPT:
+				case ResManager.RES_DESC_GATE:
 				{
 					
 				}
 					break;
+				case ResManager.RES_DESC_MAP:
+				{
+					var mp:DescMapParser = new DescMapParser(rid, data);	
+					mp.parseResource();
+					mp = null;
+				}
+					break;
+				case ResManager.RES_DESC_NPC:
+				{
+					
+				}
+					break;
+				case ResManager.RES_DESC_TASK_LOGIC:
+				{
+					
+				}
+					break;
+				case ResManager.RES_DESC_TASK_TEXT:
+				{
+					
+				}
+					break;
+				case ResManager.RES_IMG_ANIM:
+				{
+					var ap:ImgAnimParser = new ImgAnimParser(rid, data);
+					ap.parseResource();
+				}
+					break;
+				case ResManager.RES_IMG_BIGPIC:
+				{
+					var pp:ImgPicParser = new ImgPicParser(rtype, rid, data);
+					pp.parseResource();	
+				}
+					break;
+				case ResManager.RES_IMG_ICO:
+				{
+					
+				}
+					break;
+				case ResManager.RES_IMG_APIC:
+				{
+					
+				}
+					break;
+				case ResManager.RES_IMG_UI:
+				{
+					var pp:ImgPicParser = new ImgPicParser(rtype, rid, data);
+					pp.parseResource();
+				}
+					break;
+				case ResManager.RES_SCR_BATTLE:
+				{
+					
+				}
+					break;
+				case ResManager.RES_SCR_DIALOG:
+				{
+					
+				}
+					break;
+				case ResManager.RES_SCR_ITEM:
+				{
+					
+				}
+					break;
+				case ResManager.RES_SCR_NPC:
+				{
+					
+				}
+					break;
+				case ResManager.RES_SCR_TASK:
+				{
+					
+				}
+					break;
+			
 			}
 			return null;
 		}

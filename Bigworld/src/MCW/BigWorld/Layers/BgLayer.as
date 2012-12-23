@@ -5,7 +5,7 @@ package MCW.BigWorld.Layers
 	import MCW.BigWorld.Resource.MSMapDesc;
 	import MCW.BigWorld.Resource.MSPic;
 	import MCW.BigWorld.Resource.Util.ResManager;
-	
+
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
@@ -44,43 +44,55 @@ package MCW.BigWorld.Layers
 		}
 		
 		/*
+			release map pic
+		*/
+		public function release():void
+		{
+			
+		}
+		
+		/*
 			call when map desc is loaded
 		*/
 		public function onResLoaded(rtype:int, rid:int):void
 		{
-			if (rtype == ResManager.RES_TYPE_DESC)
+			if (rtype == ResManager.RES_DESC_MAP)
 			{
 				if (_bgPic.bitmapData != null)
+				{
 					_bgPic.bitmapData.dispose();
-				
-				_mapDesc = ResManager.getInstance().getDescResByID(2, this, 1);
+					//TODO: release pics
+				}
+				_mapDesc = ResManager.getInstance().getResource(rtype, rid, this, 1);
 					
 			
 			// since map is loaded, start requesting map pic
 			
 				for (var i:int = 0; i < _mapDesc.metaJson.mapList.pic.length; ++i)
 				{
-					var tpic:MSPic = ResManager.getInstance().getImgResByID(_mapDesc.metaJson.mapList.pic[i],
+					var tpic:MSPic = ResManager.getInstance().getResource(ResManager.RES_IMG_BIGPIC, _mapDesc.metaJson.mapList.pic[i],
 						this, 1);
 					if (tpic != null)
 						addMapPic(tpic);
 				}
 			}
-			else if (rtype == ResManager.RES_TYPE_IMAGE)
+			else if (rtype == ResManager.RES_IMG_BIGPIC)
 			{
 				_needRedraw = true;
 				 if (rid >= 40000 && rid < 42000) // map Pic
 				 {
-					 var ttpic:MSPic = ResManager.getInstance().getImgResByID(_mapDesc.metaJson.mapList.pic[i],
+					 var ttpic:MSPic = ResManager.getInstance().getResource(ResManager.RES_IMG_BIGPIC,
+						 _mapDesc.metaJson.mapList.pic[i],
 						 this, 1);
 					 addMapPic(ttpic);
 					 if (ttpic.metaJson.quality == "low")
 					 {
-						 ResManager.getInstance().getImgResByID(ttpic.metaJson.stdid, this, 1);
+						 ResManager.getInstance().getResource(ResManager.RES_IMG_BIGPIC, ttpic.metaJson.stdid, this, 1);
 					 }
 					 else if (ttpic.metaJson.quality == "std")
 					 {
-						 ResManager.getInstance().getImgResByID(ttpic.metaJson.highid, this, 1);
+						 ResManager.getInstance().getResource(ResManager.RES_IMG_BIGPIC, 
+							 ttpic.metaJson.highid, this, 1);
 					 }		 
 				 }
 			}
@@ -123,7 +135,7 @@ package MCW.BigWorld.Layers
 		
 		public function requestResource():void
 		{
-			_mapDesc = ResManager.getInstance().getDescResByID(2, this, 1);
+			_mapDesc = ResManager.getInstance().getResource(ResManager.RES_DESC_MAP, 2, this, 1);
 		}
 		
 	}
