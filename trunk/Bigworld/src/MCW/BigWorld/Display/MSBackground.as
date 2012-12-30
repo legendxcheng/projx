@@ -1,7 +1,7 @@
 package MCW.BigWorld.Display
 {
-	import MCW.BigWorld.Resource.MSPic;
-	import MCW.BigWorld.Resource.Util.ResManager;
+	import MCW.Resource.MSPic;
+	import MCW.Resource.Util.ResManager;
 	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;

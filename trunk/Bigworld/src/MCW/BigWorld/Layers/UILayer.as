@@ -1,6 +1,6 @@
 package MCW.BigWorld.Layers
 {
-	import MCW.BigWorld.Logic.ControlCenter;
+	import MCW.BigWorld.Logic.RenderDirector;
 	import MCW.UI.MButtonA;
 	import MCW.UI.MRecvTaskWindow;
 	
@@ -17,7 +17,7 @@ package MCW.BigWorld.Layers
 	
 	public class UILayer extends Sprite
 	{
-		private var cc:ControlCenter;
+		private var cc:RenderDirector;
 		private var recvTaskWindow:MRecvTaskWindow;
 
 		public function UILayer()
@@ -40,7 +40,7 @@ package MCW.BigWorld.Layers
 		{	
 			if (cc == null)
 			{
-				cc = ControlCenter.getInstance();
+				cc = RenderDirector.getInstance();
 			}
 			cc.mainLayer.dispatchEvent(e);
 		}

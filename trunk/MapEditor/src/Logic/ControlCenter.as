@@ -14,6 +14,7 @@ package Logic
 	{
 		
 		static private var _instance : ControlCenter;
+		private var _ccState:int; // 0 for map editing, 1 for npc editing, 2 for gate editing
 		private var _mapW :int;
 		private var _mapH :int;
 		private var _state :int;// 0 for set passable

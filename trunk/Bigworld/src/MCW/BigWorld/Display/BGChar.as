@@ -1,9 +1,9 @@
 package MCW.BigWorld.Display
 {
 	import MCW.BigWorld.Display.Base.MSprite;
-	import MCW.BigWorld.Resource.MSAnimation;
-	import MCW.BigWorld.Resource.MSSimpleDesc;
-	import MCW.BigWorld.Resource.Util.ResManager;
+	import MCW.Resource.MSAnimation;
+	import MCW.Resource.MSSimpleDesc;
+	import MCW.Resource.Util.ResManager;
 	
 	import flash.display.BitmapData;
 	import flash.geom.Point;
