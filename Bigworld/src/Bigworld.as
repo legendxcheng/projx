@@ -1,7 +1,7 @@
 package
 {
 	
-	import MCW.BigWorld.Logic.ControlCenter;
+	import MCW.BigWorld.Logic.RenderDirector;
 	
 	import flash.display.Sprite;
 	
@@ -11,12 +11,11 @@ package
 	{
 		public function Bigworld()
 		{
-			var cc:ControlCenter = ControlCenter.getInstance();
+			var cc:RenderDirector = RenderDirector.getInstance();
 			
 			addChild(cc.bgLayer);
 			addChild(cc.mainLayer);
-			addChild(cc.uiLayer);
-			cc.bgLayer.requestResource();
+			//addChild(cc.uiLayer);
 
 		}
 	}

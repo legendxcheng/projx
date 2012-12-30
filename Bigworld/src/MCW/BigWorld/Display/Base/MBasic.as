@@ -1,7 +1,10 @@
 package MCW.BigWorld.Display.Base
 {
+	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.filters.ColorMatrixFilter;
 	import flash.geom.Matrix;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
 	/*
@@ -21,6 +24,7 @@ package MCW.BigWorld.Display.Base
 		protected var _alpha:Boolean;
 
 		protected var _aBuf:BitmapData;// buffer for advant draw
+		protected var _acBuf:BitmapData;
 		
 		protected var _matrix:Matrix;
 		
@@ -28,7 +32,56 @@ package MCW.BigWorld.Display.Base
 		
 		protected var _debug:Boolean;
 		
-		protected var _needAdvDraw:Boolean;
+		protected var _needAdvDraw:Boolean;// scale rotation and color transform
+		
+		protected var _colorMatrix:Array;// 4 * 5 matrix
+		protected var _needColorMatrix:Boolean;
+		
+		
+				
+		public function set needColorMatrix(value:Boolean):void
+		{
+			_colorMatrix = null;
+			_needColorMatrix = value;
+		}
+		
+		protected function getColorTransform():BitmapData
+		{
+			
+			if (_needColorMatrix)
+			{
+				if (_acBuf != null)
+				{
+					_acBuf.dispose();
+				}	
+				_acBuf = new BitmapData(_aBuf.width, _aBuf.height);
+				_acBuf.applyFilter(_aBuf, _aBuf.rect, new Point(0, 0), new ColorMatrixFilter(_colorMatrix));
+				return _acBuf;
+			}
+			return _aBuf;
+		}
+
+		public function setColorOffset(rOff:int, gOff:int, bOff:int):void
+		{
+			if (_colorMatrix == null)
+			{
+				_colorMatrix = new Array(1,0,0,0,rOff,
+											0,1,0,0, gOff,
+											0,0,1,0, bOff,
+											0,0,0,1,0);
+				
+				_needAdvDraw = true;
+				
+			}
+			else
+			{
+				_colorMatrix[4] = rOff;
+				_colorMatrix[9] = gOff;
+				_colorMatrix[14] = bOff;
+			}
+			
+			_needColorMatrix = true;
+		}
 		
 		public function MBasic()
 		{
@@ -39,8 +92,22 @@ package MCW.BigWorld.Display.Base
 			_rotation = 0;
 			_debug = false;
 			_needAdvDraw = false;
+			_needColorMatrix = false;
+
 		}
 		
+		
+		
+		public function get colorMatrix():Array
+		{
+			return _colorMatrix;
+		}
+
+		public function set colorMatrix(value:Array):void
+		{
+			_colorMatrix = value;
+		}
+
 		public function set debug(value:Boolean):void
 		{
 			_debug = value;

@@ -165,7 +165,7 @@ public class BigPicGenerator {
             if (lowS > 0)
             {
             
-            outs = new DataOutputStream(new FileOutputStream("img_" + lowid + ".res"));
+            outs = new DataOutputStream(new FileOutputStream("3_" + lowid + ".res"));
             tpinp = new FileInputStream(new File("low.jpg"));
             ret = tpinp.read(pngBuffer);
             outs.writeUTF(getStr(1));
@@ -175,7 +175,7 @@ public class BigPicGenerator {
             }
             if (stdS > 0)
             {
-            outs = new DataOutputStream(new FileOutputStream("img_" + stdid + ".res"));
+            outs = new DataOutputStream(new FileOutputStream("3_" + stdid + ".res"));
             tpinp = new FileInputStream(new File("std.jpg"));
             ret = tpinp.read(pngBuffer);
             outs.writeUTF(getStr(2));
@@ -184,7 +184,7 @@ public class BigPicGenerator {
             outs.close();
             }
             
-            outs = new DataOutputStream(new FileOutputStream("img_" + highid + ".res"));
+            outs = new DataOutputStream(new FileOutputStream("3_" + highid + ".res"));
             tpinp = new FileInputStream(new File("high.jpg"));
             ret = tpinp.read(pngBuffer);
             outs.writeUTF(getStr(3));

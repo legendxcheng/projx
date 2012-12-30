@@ -1,11 +1,12 @@
 package MCW.BigWorld.Display.Base
 {
 	import MCW.BigWorld.Layers.MainLayer;
-	import MCW.BigWorld.Logic.ControlCenter;
-	import MCW.BigWorld.Resource.IResource;
-	import MCW.BigWorld.Resource.MSAnimation;
+	import MCW.BigWorld.Logic.RenderDirector;
+	import MCW.Resource.IResource;
+	import MCW.Resource.MSAnimation;
 	
 	import flash.display.BitmapData;
+	import flash.filters.ColorMatrixFilter;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -182,7 +183,8 @@ package MCW.BigWorld.Display.Base
 				rect.y = _y + rect.y * _scaleY;
 				
 				*/
-				buffer.draw(_aBuf, getMatrix(), null, null, null, true);
+				
+				buffer.draw(getColorTransform(), getMatrix(), null, null, null, true);
 			}
 			else // basic draw, use copyPixels
 			{

@@ -91,7 +91,7 @@ public class UIPicGenerator {
             DataOutputStream outs = null;
             int ret;
             FileInputStream tpinp;
-            outs = new DataOutputStream(new FileOutputStream("img_" + picid + ".res"));
+            outs = new DataOutputStream(new FileOutputStream("0_" + picid + ".res"));
             tpinp = new FileInputStream(new File(_picPath));
             ret = tpinp.read(pngBuffer);
             outs.writeUTF(getStr());

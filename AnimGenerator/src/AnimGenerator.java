@@ -61,7 +61,7 @@ public class AnimGenerator {
         			outputJson.append("{");
         			_rid = Integer.parseInt(str);
         			outputJson.append("\"rid:\":" + _rid + ",");
-        			out = new DataOutputStream(new FileOutputStream("img_" + _rid + ".res"));
+        			out = new DataOutputStream(new FileOutputStream("2_" + _rid + ".res"));
         			break;
         		case 1:// remarks
         			break;

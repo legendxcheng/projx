@@ -26,7 +26,7 @@ package MCW.UI
 			addEventListener(MouseEvent.MOUSE_DOWN, _buttonMouseDown);
 			addEventListener(ReleaseEvent.RELEASE, _buttonRelease);
 			addEventListener(MouseEvent.CLICK, _buttonClickStopPropagation);
-			setForeground(ASColor.YELLOW);
+			setForeground(new ASColor(0xFFC436));
 		}
 		
 		
@@ -39,11 +39,11 @@ package MCW.UI
 		private function _buttonRollOver(e:Event):void
 		{
 			
-			e.target.setForeground(ASColor.LIGHT_GRAY);
+			e.target.setForeground(ASColor.YELLOW);
 		}
 		private function _buttonRollOut(e:Event):void
 		{
-			e.target.setForeground(ASColor.YELLOW);
+			setForeground(new ASColor(0xFFC436));
 		}4
 		private function _buttonMouseDown(e:Event):void
 		{
@@ -51,7 +51,7 @@ package MCW.UI
 		}
 		private function _buttonRelease(e:Event):void
 		{
-			e.target.setForeground(ASColor.LIGHT_GRAY);	
+			e.target.setForeground(ASColor.YELLOW);	
 		}
 		
 	}

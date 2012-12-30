@@ -1,10 +1,10 @@
 package MCW.BigWorld.Layers
 {
 	import MCW.BigWorld.Display.MSBackground;
-	import MCW.BigWorld.Logic.ControlCenter;
-	import MCW.BigWorld.Resource.MSMapDesc;
-	import MCW.BigWorld.Resource.MSPic;
-	import MCW.BigWorld.Resource.Util.ResManager;
+	import MCW.BigWorld.Logic.RenderDirector;
+	import MCW.Resource.MSMapDesc;
+	import MCW.Resource.MSPic;
+	import MCW.Resource.Util.ResManager;
 
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -76,25 +76,25 @@ package MCW.BigWorld.Layers
 						addMapPic(tpic);
 				}
 			}
-			else if (rtype == ResManager.RES_IMG_BIGPIC)
+			else if (rtype == ResManager.RES_IMG_BIGPIC)// map picture
 			{
 				_needRedraw = true;
-				 if (rid >= 40000 && rid < 42000) // map Pic
-				 {
-					 var ttpic:MSPic = ResManager.getInstance().getResource(ResManager.RES_IMG_BIGPIC,
-						 _mapDesc.metaJson.mapList.pic[i],
-						 this, 1);
-					 addMapPic(ttpic);
-					 if (ttpic.metaJson.quality == "low")
-					 {
-						 ResManager.getInstance().getResource(ResManager.RES_IMG_BIGPIC, ttpic.metaJson.stdid, this, 1);
-					 }
-					 else if (ttpic.metaJson.quality == "std")
-					 {
-						 ResManager.getInstance().getResource(ResManager.RES_IMG_BIGPIC, 
-							 ttpic.metaJson.highid, this, 1);
-					 }		 
-				 }
+				
+				var ttpic:MSPic = ResManager.getInstance().getResource(ResManager.RES_IMG_BIGPIC,
+					_mapDesc.metaJson.mapList.pic[i],
+					this, 1);
+				addMapPic(ttpic);
+				if (ttpic.metaJson.quality == "low")
+				{
+					ResManager.getInstance().getResource(ResManager.RES_IMG_BIGPIC, ttpic.metaJson.stdid, this, 1);
+				}
+				else if (ttpic.metaJson.quality == "std")
+				{
+					ResManager.getInstance().getResource(ResManager.RES_IMG_BIGPIC, 
+						ttpic.metaJson.highid, this, 1);
+				}
+				ResManager.getInstance().releaseResource(ResManager.RES_IMG_BIGPIC, ttpic.metaJson.rid);
+
 			}
 			
 			
@@ -102,7 +102,7 @@ package MCW.BigWorld.Layers
 		
 		public function update():void
 		{
-			var cc:ControlCenter = ControlCenter.getInstance();
+			var cc:RenderDirector = RenderDirector.getInstance();
 			if (cc.camMoved || _needRedraw)
 			{
 				

@@ -114,7 +114,7 @@ public class BGCharDescGenerator {
            
             // generate three .res file
             DataOutputStream outs = null;
-            outs = new DataOutputStream(new FileOutputStream("desc_" + rid + ".res"));
+            outs = new DataOutputStream(new FileOutputStream("49_" + rid + ".res"));
             outs.writeUTF(getStr());
             outs.close();
             
