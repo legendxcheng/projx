@@ -13,6 +13,7 @@ package MCW.BigWorld.Display.Base
 	public class MBasic implements IDisplay
 	{
 		// matrix related properties
+		
 		protected var _scaleX:Number;
 		protected var _scaleY:Number;
 		protected var _x:int;
@@ -45,7 +46,7 @@ package MCW.BigWorld.Display.Base
 			_needColorMatrix = value;
 		}
 		
-		protected function getColorTransform():BitmapData
+		protected function getColoredBMD():BitmapData
 		{
 			
 			if (_needColorMatrix)

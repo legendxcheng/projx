@@ -81,6 +81,7 @@ package MCW.BigWorld.Display.Base
 			{
 				if (_aBuf != null)
 					_aBuf.dispose();
+				
 				_aBuf = _animation.getBitmapData(_curFrame);
 			}
 			
@@ -184,7 +185,7 @@ package MCW.BigWorld.Display.Base
 				
 				*/
 				
-				buffer.draw(getColorTransform(), getMatrix(), null, null, null, true);
+				buffer.draw(getColoredBMD(), getMatrix(), null, null, null, true);
 			}
 			else // basic draw, use copyPixels
 			{

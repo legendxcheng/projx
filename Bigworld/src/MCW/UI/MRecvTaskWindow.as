@@ -28,9 +28,11 @@ package MCW.UI
 		private var _taskDescText:TextField;
 		private var _taskNameText:TextField;
 		
+		
 		public function MRecvTaskWindow(owner:*=null, modal:Boolean=false)
 		{
 			super(owner, modal);
+			
 			
 			_bg = new Bitmap();
 			this.addChild(_bg);
@@ -88,6 +90,7 @@ package MCW.UI
 			_taskNameText.selectable = false;
 			_taskNameText.autoSize = TextFieldAutoSize.CENTER;
 			this.addChild(_taskNameText);
+			
 			
 			
 			

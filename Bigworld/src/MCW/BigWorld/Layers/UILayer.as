@@ -2,6 +2,7 @@ package MCW.BigWorld.Layers
 {
 	import MCW.BigWorld.Logic.RenderDirector;
 	import MCW.UI.MButtonA;
+	import MCW.UI.MDialogWindow;
 	import MCW.UI.MRecvTaskWindow;
 	
 	import flash.display.Sprite;
@@ -19,6 +20,7 @@ package MCW.BigWorld.Layers
 	{
 		private var cc:RenderDirector;
 		private var recvTaskWindow:MRecvTaskWindow;
+		private var dialogWin:MDialogWindow;
 
 		public function UILayer()
 		{
@@ -27,9 +29,11 @@ package MCW.BigWorld.Layers
 			AsWingManager.initAsStandard( this);
 			UIManager.setLookAndFeel(new org.aswing.skinbuilder.SkinBuilderLAF());
 			
-			recvTaskWindow = new MRecvTaskWindow();
-			recvTaskWindow.show();
-			
+			//recvTaskWindow = new MRecvTaskWindow();
+			//recvTaskWindow.show();
+			dialogWin = new MDialogWindow();
+			dialogWin.setNewDialog(1000);
+			this.addChild(dialogWin);
 		
 			
 			

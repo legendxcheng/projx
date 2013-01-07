@@ -7,6 +7,7 @@ package MCW.BigWorld.Display
 	
 	import flash.display.BitmapData;
 	import flash.geom.Point;
+	import flash.globalization.NumberFormatter;
 	
 	import mx.resources.ResourceManager;
 	
@@ -44,51 +45,58 @@ package MCW.BigWorld.Display
 		
 		private function calcDir(p:Point):int
 		{
-			if (p.x < 0)
+			var cosp:Number = Math.acos(p.y / p.length);
+			trace(cosp);
+			if (p.x >= 0)
 			{
-				if (p.y < 0)
-				{
-					return 3;	
-				}
-				else if (p.y == 0)
-				{
-					return 2;
-				}
-				else
-				{
-					return 1;
-				}
-			}
-			else if (p.x == 0)
-			{
-				if (p.y < 0)
-				{
-					return 4;
-				}
-				else if (p.y == 0)
+				if (cosp <= Math.PI / 8)
 				{
 					return 0;
-				}	
-				else
+				}
+				else if (cosp <= Math.PI / 8 * 3)
 				{
-					
+					return 7;
+				}
+				else if (cosp <= Math.PI / 8 * 5)
+				{
+					return 6;
+				}
+				else if (cosp <= Math.PI / 8 * 7)
+				{
+					return 5;
+				}
+				else 
+				{
+					return 4;
 				}
 			}
 			else
 			{
-				if (p.y < 0)
+				
+				if (cosp <= Math.PI / 8)
 				{
-					return 5;	
+					return 0;
 				}
-				else if (p.y == 0)
+				else if (cosp <= Math.PI / 8 * 3)
 				{
-					return 6;
+					return 1;
 				}
-				else
+				else if (cosp <= Math.PI / 8 * 5)
 				{
-					return 7;
-				}	
+					return 2;
+				}
+				else if (cosp <= Math.PI / 8 * 7)
+				{
+					return 3;
+				}
+				else 
+				{
+					return 4;
+				}
 			}
+			
+			
+			
 			return 0;
 		}
 		
