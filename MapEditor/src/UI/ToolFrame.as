@@ -74,13 +74,13 @@ package UI
 			btnPassable = new JToggleButton("标记可通过");
 			btnPassable.setSizeWH(80, 30);
 			btnPassable.x = 70;
-			btnPassable.y = 50;
+			btnPassable.y = 40;
 			btnPassable.addEventListener(AWEvent.ACT, onTogglePassable);
 			
 			btnTransparent = new JToggleButton("标记透明");
 			btnTransparent.setSizeWH(60, 30);
 			btnTransparent.x = 5;
-			btnTransparent.y = 50;
+			btnTransparent.y = 40;
 			btnTransparent.addEventListener(AWEvent.ACT, onToggleTransparent);
 			
 			

@@ -1,14 +1,20 @@
 package Logic
 {
 
+	import UI.MapAttrPanel;
 	import UI.MapFileListFrame;
 	import UI.MapFrame;
+	import UI.NPCAttrPanel;
+	import UI.NPCListFrame;
+	import UI.NPCMapFrame;
 	
 	import flash.events.DataEvent;
 	import flash.events.Event;
 	import flash.net.FileReference;
 	import flash.utils.ByteArray;
 	import flash.xml.*;
+	
+	import org.aswing.JOptionPane;
 
 	public class ControlCenter
 	{
@@ -17,14 +23,18 @@ package Logic
 		private var _ccState:int; // 0 for map editing, 1 for npc editing, 2 for gate editing
 		private var _mapW :int;
 		private var _mapH :int;
-		private var _state :int;// 0 for set passable
+		private var _mapID:int;
+		private var _mapState :int;// 0 for set passable
 		//  1 for set transparent
 		private var _nxOffset:int;
 		private var _nyMax : int;
 		private var _nxMax : int;
-		
+
 		private var _mapFrame :MapFrame;
 		private var _mapFLFrame :MapFileListFrame;
+		private var _attrPanel:MapAttrPanel;
+		
+		private var _mapPicPath:String;
 		
 		private var _pArea : Array;
 		private var _tArea : Array;
@@ -35,7 +45,153 @@ package Logic
 		private var _fileR :FileReference;
 		
 		private var _gridSideLen : Number;
+		
+		// npc related
+		private var _npcList:Array;
+		private var _curNPCID:int;// current NPC
 
+		private var _nMapFrame:NPCMapFrame;
+		private var _npcState:int;  //1 for a new npc, 2 for editing an npc.
+		private var _npcListFrame:NPCListFrame;
+		private var _nAttrPanel:NPCAttrPanel;
+		private var _tmpNPC:Object;// used when add a new NPC
+		private var _npcX:int;
+		private var _npcY:int;
+		
+		public function saveTmpNPC():void
+		{
+		 	this._npcList[this._curNPCID] = this.tmpNPC;
+			this.npcListFrame.resetNPCList(this._npcList);
+		}
+		
+		// after saving a new NPC
+		public function insertTmpNPC():void
+		{
+			this._npcList.push(_tmpNPC);
+			this.npcListFrame.resetNPCList(this._npcList);
+			
+		}
+		
+		public function delNPC():void
+		{
+			this._npcList.splice(_curNPCID, 1);
+			_curNPCID = 0;
+			this._npcListFrame.resetNPCList(this._npcList);
+		}
+		
+		public function get npcY():int
+		{
+			return _npcY;
+		}
+		
+		public function selectNPC(nid:int):void
+		{
+			_curNPCID = nid;
+			this._nAttrPanel.fillNPCContent(this._npcList[_curNPCID]);
+		}
+
+		public function set npcY(value:int):void
+		{
+			_npcY = value;
+		}
+
+		public function get npcX():int
+		{
+			return _npcX;
+		}
+
+		public function set npcX(value:int):void
+		{
+			_npcX = value;
+		}
+
+		public function get tmpNPC():Object
+		{
+			return _tmpNPC;
+		}
+
+		public function set tmpNPC(value:Object):void
+		{
+			_tmpNPC = value;
+		}
+
+		public function get npcState():int
+		{
+			return _npcState;
+		}
+
+		public function set npcState(value:int):void
+		{
+			_npcState = value;
+		}
+
+		public function get npcListFrame():NPCListFrame
+		{
+			return _npcListFrame;
+		}
+
+		public function set npcListFrame(value:NPCListFrame):void
+		{
+			_npcListFrame = value;
+		}
+
+		public function get nAttrPanel():NPCAttrPanel
+		{
+			return _nAttrPanel;
+		}
+
+		public function set nAttrPanel(value:NPCAttrPanel):void
+		{
+			_nAttrPanel = value;
+		}
+
+		public function get nMapFrame():NPCMapFrame
+		{
+			return _nMapFrame;
+		}
+
+		public function set nMapFrame(value:NPCMapFrame):void
+		{
+			_nMapFrame = value;
+		}
+
+		public function setNPCPos(xi:int, yi:int):void
+		{
+			_npcX = xi;
+			_npcY = yi;
+			this._nAttrPanel.setNPCPosDisplayed(xi, yi);
+		}
+		
+		public function get mapPicPath():String
+		{
+			return _mapPicPath;
+		}
+
+		public function set mapPicPath(value:String):void
+		{
+			_mapPicPath = value;
+		}
+
+		public function get attrPanel():MapAttrPanel
+		{
+			return _attrPanel;
+		}
+
+		public function set attrPanel(value:MapAttrPanel):void
+		{
+			_attrPanel = value;
+		}
+		
+		public function getMapID():int
+		{
+			return _attrPanel.getMapID();
+		}
+		
+		public function setShowMapID(mid:int):void
+		{
+			_attrPanel.setMapID(mid);
+		}
+		
 		public function get nyMax():int
 		{
 			return _nyMax;
@@ -81,6 +237,12 @@ package Logic
 			_fileR.addEventListener(Event.COMPLETE, onFileLoadCompleted);
 		}
 		
+		public function updateNPCListFrame():void
+		{
+			this.npcListFrame.resetNPCList(_npcList);
+		}
+		
+		// desc res loaded
 		public function onFileLoadCompleted(e:Event):void
 		{
 			var ba:ByteArray = e.target.data as ByteArray;
@@ -105,7 +267,13 @@ package Logic
 			_nxMax = json.nxMax;
 			_nxOffset = json.nxOffset;
 			_gridNum = json.gridNum;
-			_mapList = new Array();
+			_mapID = json.rid;
+			this.setShowMapID(_mapID);
+			_mapList = new Array();	
+			_npcList = json.npcList;
+			// to fill npc list frame
+			updateNPCListFrame();
+			
 			for each(var item:String in json.mapList.pic)
 			{
 				_mapList.push(item.toString());
@@ -147,6 +315,13 @@ package Logic
 		
 		public function exportFile():void
 		{
+			_mapID = this.getMapID();
+			if (_mapID < 0)
+			{
+				var jop:JOptionPane = JOptionPane.showMessageDialog("请设置大世界的ID",
+					"还未设置大世界ID");
+				return;
+			}
 			var json:String = this.generateJson();
 			var ba:ByteArray = new ByteArray();
 			ba.writeUTF(json);
@@ -186,7 +361,7 @@ package Logic
 			}
 			
 			var file:FileReference = new FileReference();
-			file.save(ba, "mapDesc.res");
+			file.save(ba, "48_" + _mapID + ".res");
 			
 		}
 
@@ -218,6 +393,8 @@ package Logic
 			ret.mapList = _mapFLFrame.generateJson();
 			ret.width = _mapW;
 			ret.height = _mapH;
+			ret.rid = _mapID;
+			ret.npcList = _npcList;
 			/*
 			ret = "<map>";
 			var tmps:String;
@@ -248,7 +425,7 @@ package Logic
 
 		public function get state():int
 		{
-			return _state;
+			return _mapState;
 		}
 		
 		
@@ -275,7 +452,7 @@ package Logic
 		
 		public function setState(s:int):void
 		{
-			_state = s;
+			_mapState = s;
 			_mapFrame.changeState();
 			
 		}
@@ -305,6 +482,7 @@ package Logic
 		{
 			_gridSideLen = 50;
 			_mapList = new Array();
+			_npcList = new Array();
 		}
 		
 		public function clickPassable(cx:int, cy:int):Boolean
@@ -340,6 +518,7 @@ package Logic
 		{
 			_mapW = w;
 			_mapH = h;
+			this._attrPanel.showMapSize(w, h);
 			var a:Number = Math.cos(72.5/180 *Math.PI);
 			var b:Number = Math.sin(72.5/180 * Math.PI);
 			_nxOffset = Math.floor((_mapH / a) / 2 / _gridSideLen);
