@@ -271,6 +271,8 @@ package Logic
 			this.setShowMapID(_mapID);
 			_mapList = new Array();	
 			_npcList = json.npcList;
+			if (_npcList == null)
+				_npcList = new Array();
 			// to fill npc list frame
 			updateNPCListFrame();
 			
