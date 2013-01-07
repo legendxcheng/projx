@@ -46,10 +46,11 @@ package MCW.BigWorld.Layers
 			
 			var cy : Number = yind * cc.gridSideLen * a - xind * cc.gridSideLen * a; // circle center x
 			var cx : Number = xind * cc.gridSideLen * b + yind * cc.gridSideLen * b + cc.gridSideLen * b; // circle center y
-			
+			/*
 			trace(e.stageX + "," + e.stageY);
 			trace(xind + "," + yind);
 			trace(cx + "," + cy);
+			*/
 			_mainChar.setMoveTarget(cx, cy);
 		}
 		

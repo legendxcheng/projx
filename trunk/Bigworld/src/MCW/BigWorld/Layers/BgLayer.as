@@ -18,7 +18,7 @@ package MCW.BigWorld.Layers
 		// Class for background
 		private var _mapDesc:MSMapDesc;
 		private var _bgPic:Bitmap;// the whold big picture 
-		private var _mapShow:Bitmap;
+		private var _mapShow:Bitmap;// the current scrren picture
 		private var _needRedraw:Boolean;
 		/*
 		private function onMouseClick(e:MouseEvent):void

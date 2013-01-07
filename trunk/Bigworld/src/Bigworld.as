@@ -15,7 +15,7 @@ package
 			
 			addChild(cc.bgLayer);
 			addChild(cc.mainLayer);
-			//addChild(cc.uiLayer);
+			addChild(cc.uiLayer);
 
 		}
 	}
