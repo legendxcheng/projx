@@ -312,8 +312,9 @@ package UI
 		
 		public function loadMapFile(fileName :String):void
 		{
-			
+			cc.mapPicPath = fileName;
 			_loadPane.load(new URLRequest(fileName));
+			cc.nMapFrame.loadMapFile(fileName);
 		}
 	}
 }
