@@ -15,7 +15,7 @@ package UI{
 	/**
 	 * AttributePanel
 	 */
-	public class AttributePanel extends JPanel{
+	public class MapAttrPanel extends JPanel{
 		
 		//members define
 		private var mapSizeLable1:JLabel;
@@ -26,14 +26,26 @@ package UI{
 		private var btnLoadMap:JButton;
 		private var btnChooseMap:JButton;
 		private var label16:JLabel;
-		private var textfield17:JTextField;
+		private var mapIDTF:JTextField;
 		private var cc : ControlCenter;
 		
+		public function showMapSize(w:int, h:int):void
+		{
+			this.mapSizeW.setText(w.toString());
+			this.mapSizeH.setText(h.toString());
+		}
+		
+		public function getMapID():int
+		{
+			if (this.mapIDTF.getText().length == 0)
+				return -1;
+			return parseInt(mapIDTF.getText());
+		}
 		
 		/**
 		 * AttributePanel Constructor
 		 */
-		public function AttributePanel(){
+		public function MapAttrPanel(){
 			//component creation
 			setSize(new IntDimension(200, 71));
 			var layout0:EmptyLayout = new EmptyLayout();
@@ -49,16 +61,18 @@ package UI{
 			
 			mapSizeW = new JTextField();
 			mapSizeW.setLocation(new IntPoint(65, 5));
-			mapSizeW.setSize(new IntDimension(35, 20));
+			mapSizeW.setSize(new IntDimension(55, 20));
+			mapSizeW.setEditable(false);
 			
 			label5 = new JLabel();
-			label5.setLocation(new IntPoint(100, 5));
+			label5.setLocation(new IntPoint(120, 5));
 			label5.setSize(new IntDimension(20, 20));
 			label5.setText("x");
 			
 			mapSizeH = new JTextField();
-			mapSizeH.setLocation(new IntPoint(120, 5));
-			mapSizeH.setSize(new IntDimension(35, 20));
+			mapSizeH.setLocation(new IntPoint(140, 5));
+			mapSizeH.setSize(new IntDimension(55, 20));
+			mapSizeH.setEditable(false);
 			
 			btnSetMapSize = new JButton();
 			btnSetMapSize.setLocation(new IntPoint(160, 5));
@@ -73,11 +87,11 @@ package UI{
 			label16 = new JLabel();
 			label16.setLocation(new IntPoint(3, 25));
 			label16.setSize(new IntDimension(96, 20));
-			label16.setText("mapFileName:");
+			label16.setText("Map ID:");
 			
-			textfield17 = new JTextField();
-			textfield17.setLocation(new IntPoint(100, 25));
-			textfield17.setSize(new IntDimension(90, 20));
+			mapIDTF = new JTextField();
+			mapIDTF.setLocation(new IntPoint(100, 25));
+			mapIDTF.setSize(new IntDimension(90, 20));
 			
 			btnChooseMap = new JButton();
 			btnChooseMap.setLocation(new IntPoint(5, 50));
@@ -89,10 +103,10 @@ package UI{
 			append(mapSizeW);
 			append(label5);
 			append(mapSizeH);
-			append(btnSetMapSize);
+			//append(btnSetMapSize);
 			append(btnLoadMap);
 			append(label16);
-			append(textfield17);
+			append(mapIDTF);
 			append(btnChooseMap);
 			
 			btnLoadMap.addEventListener(AWEvent.ACT, _onLoadMap);
@@ -140,10 +154,12 @@ package UI{
 			return btnLoadMap;
 		}
 		
-		
-		public function getTextfield17():JTextField{
-			return textfield17;
+		public function setMapID(mid:int):void
+		{
+			mapIDTF.setText(mid.toString());
 		}
+		
+
 		
 		
 	}
