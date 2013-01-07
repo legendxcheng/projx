@@ -2,18 +2,17 @@ import java.io.*;
 import java.util.Vector;
 import org.apache.poi.ss.usermodel.*;
 
-public class AnimGenerator {
+public class APicGenerator {
 	
 	
     public static void main(String[] args) throws Exception 
     {
     	int _jpgQuality = 0;
     	String _srcFolder = "";
-    	int _anchorX = 0;
-    	int _anchorY = 0;
+    	
     	int _rid = 0;
     		
-        InputStream is = new FileInputStream(new File("resource_anim.xls"));
+        InputStream is = new FileInputStream(new File("resource_apic.xls"));
         //System.out.println(is.available());
         Workbook wb = WorkbookFactory.create(is);
         Sheet sheet = wb.getSheetAt(0);
@@ -31,10 +30,7 @@ public class AnimGenerator {
         	int k = 0;
         	DataOutputStream out = null;
         	StringBuffer outputJson = new StringBuffer();
-            Vector<String> picPath = new Vector<String>();
-            Vector<String> frameName = new Vector<String>();
-            Vector<Integer> picID = new Vector<Integer>();
-            Vector<Integer> frameCount = new Vector<Integer>();
+     
             
             for(Cell cell : row) 
             {
@@ -60,83 +56,26 @@ public class AnimGenerator {
         		case 0:// resource id
         			outputJson.append("{");
         			_rid = Integer.parseInt(str);
-        			outputJson.append("\"rid:\":" + _rid + ",");
-        			out = new DataOutputStream(new FileOutputStream("2_" + _rid + ".res"));
+        			outputJson.append("\"rid:\":" + _rid);
+        			out = new DataOutputStream(new FileOutputStream("4_" + _rid + ".res"));
         			break;
         		case 1:// remarks
         			break;
         		case 2:// jpg quality
         			_jpgQuality = Integer.parseInt(str);
         			break;
-        		case 3:// source folder
+        		case 3:// source path
         			_srcFolder = str;
         			break;
-        		case 4://anchorX
-        			_anchorX = Integer.parseInt(str);
-        			outputJson.append("\"anchorX\":" + _anchorX + ",");
-        			break;
-        		case 5:// anchorY
-        			_anchorY = Integer.parseInt(str);
-        			outputJson.append("\"anchorY\":" + _anchorY + ",");
-        			break;
-        		default:
-        			if (k % 2 == 0) {
-        				picPath.addElement(str);
-        			} else {
-        				frameCount.addElement((int)(cell.getNumericCellValue()));
-        			}
+        		default:        		
         			break;
         		}
                 
                 k ++;
                 
             }
-            int t = 0;
-        	boolean flag = true;
-        	for (int j = 0; j < picPath.size(); j ++) 
-        	{
-	        	for (k = 0; k < j; k ++) 
-	        	{
-	        		if (picPath.elementAt(j).equals(picPath.elementAt(k))) 
-	        		{
-	        			picID.addElement(picID.elementAt(k));
-	        			flag = false;
-	        			break;
-	        		}
-	        	}
-	        	if (flag) // new file, allocate a new id to it
-	        	{
-	        		frameName.addElement(picPath.elementAt(j));
-	        		picID.addElement(t);
-	        		t ++;
-	        	}
-        	}
-        	
-        	// output frameName array to json
-        	outputJson.append("\"frameName\":[");
-        	for (int j = 0; j < frameName.size(); ++j)
-        	{
-        		if (j > 0) outputJson.append(",");
-        		outputJson.append("\"" + frameName.elementAt(j) + "\"");
-        	}
-        	outputJson.append("],");
-        	
-        	// output frameList
-        	outputJson.append("\"animation\":[");
-        	boolean firstFlag = true;
-        	for (int j = 0; j < picPath.size(); ++j)
-        	{
-        		for (int l = 0; l < frameCount.elementAt(j); ++l)
-        		{
-        			if (!firstFlag)
-        				outputJson.append(",");
-        			outputJson.append(picID.elementAt(j));
-        			firstFlag = false;
-        		}
-        	}
-        	if (emptyRow)
-        		break;
-        	outputJson.append("]}");
+            
+        	outputJson.append("}");
         	out.writeUTF(outputJson.toString());
         	
         	//TODO: use texture packer
