@@ -56,7 +56,7 @@ public class APicGenerator {
         		case 0:// resource id
         			outputJson.append("{");
         			_rid = Integer.parseInt(str);
-        			outputJson.append("\"rid:\":" + _rid);
+        			outputJson.append("\"rid\":" + _rid);
         			out = new DataOutputStream(new FileOutputStream("4_" + _rid + ".res"));
         			break;
         		case 1:// remarks
@@ -83,10 +83,10 @@ public class APicGenerator {
         	// TexturePacker --algorithm MaxRects --sheet xxx_a.jpg --data xxx.json --format json --trim-sprite-names --allow-free-size --opt Alpha --jpg-quality 80
         	String name1 = "out_" + _rid;
         	String arg1 = "--disable-rotation --algorithm MaxRects --sheet " + name1 + ".jpg --data " +
-        			name1 + ".json --format json  --allow-free-size --opt RGB888 --jpg-quality "
+        			name1 + ".json --format json  --allow-free-size --opt RGB888 --jpg-quality --no-trim"
         			+ _jpgQuality;
         	String arg2 = "--disable-rotation --algorithm MaxRects --sheet " + name1 + "_a.jpg --data " +
-        			name1 + ".json --format json  --allow-free-size --opt Alpha --jpg-quality "
+        			name1 + ".json --format json  --allow-free-size --opt Alpha --jpg-quality --no-trim"
         			+ _jpgQuality;
         	/*
         	Runtime.getRuntime().exec("del out.json");
@@ -102,16 +102,10 @@ public class APicGenerator {
         	proc.waitFor();
         	
         	//TODO: copy .json and put it to out
-        	InputStream tpinp = new FileInputStream(new File(name1 + ".json"));
-        	byte[] jsonBuffer = new byte[tpinp.available()];        	
-        	int ret = tpinp.read(jsonBuffer);
-        	String str = new String(jsonBuffer);
-        	out.writeUTF(str);
-            
-            tpinp.close();
-            
+        	InputStream tpinp;
+        	
             //TODO: put 2 jpg file into out
-            
+            int ret;
             tpinp = new FileInputStream(new File(name1 + ".jpg"));
             ret = tpinp.read(pngBuffer);
             out.writeInt(ret);

@@ -1,12 +1,15 @@
 package Logic
 {
 
-	import UI.MapAttrPanel;
-	import UI.MapFileListFrame;
-	import UI.MapFrame;
-	import UI.NPCAttrPanel;
-	import UI.NPCListFrame;
-	import UI.NPCMapFrame;
+	import UI.Gate.GateListFrame;
+	import UI.Gate.GateMapFrame;
+	import UI.Map.MapAttrPanel;
+	import UI.Map.MapFileListFrame;
+	import UI.Map.MapFrame;
+	import UI.Map.ToolFrame;
+	import UI.NPC.NPCAttrPanel;
+	import UI.NPC.NPCListFrame;
+	import UI.NPC.NPCMapFrame;
 	
 	import flash.events.DataEvent;
 	import flash.events.Event;
@@ -25,14 +28,22 @@ package Logic
 		private var _mapH :int;
 		private var _mapID:int;
 		private var _mapState :int;// 0 for set passable
-		//  1 for set transparent
+		//  1 for set transparent // 2 for set rebirth point // 3 for set teleport point
 		private var _nxOffset:int;
 		private var _nyMax : int;
 		private var _nxMax : int;
+		
+		// teleport position
+		// rebirth position
+		private var _rbx:int;
+		private var _rby:int;
+		private var _tpx:int;
+		private var _tpy:int;
 
 		private var _mapFrame :MapFrame;
-		private var _mapFLFrame :MapFileListFrame;
-		private var _attrPanel:MapAttrPanel;
+		//private var _mapFLFrame :MapFileListFrame;
+		//private var _attrPanel:MapAttrPanel;
+		private var _toolFrame:ToolFrame;
 		
 		private var _mapPicPath:String;
 		
@@ -53,15 +64,101 @@ package Logic
 		private var _nMapFrame:NPCMapFrame;
 		private var _npcState:int;  //1 for a new npc, 2 for editing an npc.
 		private var _npcListFrame:NPCListFrame;
-		private var _nAttrPanel:NPCAttrPanel;
+		//private var _nAttrPanel:NPCAttrPanel;
 		private var _tmpNPC:Object;// used when add a new NPC
 		private var _npcX:int;
 		private var _npcY:int;
 		
+		//gate related
+		private var _gMapFrame:GateMapFrame;
+		private var _gateListFrame:GateListFrame;
+		private var _gateState:int;  //1 for a new gate, 2 for editing a gate.
+		private var _tmpGate:Object;// used when add a new NPC
+		private var _gateX:int;
+		private var _gateY:int;
+		private var _gateList:Array;
+		private var _curGateID:int;// current NPC
+
+		public function get gateY():int
+		{
+			return _gateY;
+		}
+
+		public function set gateY(value:int):void
+		{
+			_gateY = value;
+		}
+
+		public function get gateX():int
+		{
+			return _gateX;
+		}
+
+		public function set gateX(value:int):void
+		{
+			_gateX = value;
+		}
+
+		public function get gateState():int
+		{
+			return _gateState;
+		}
+
+		public function set gateState(value:int):void
+		{
+			_gateState = value;
+		}
+
+		public function get tmpGate():Object
+		{
+			return _tmpGate;
+		}
+
+		public function set tmpGate(value:Object):void
+		{
+			_tmpGate = value;
+		}
+
+		public function get gateListFrame():GateListFrame
+		{
+			return _gateListFrame;
+		}
+
+		public function set gateListFrame(value:GateListFrame):void
+		{
+			_gateListFrame = value;
+		}
+
+		public function get gMapFrame():GateMapFrame
+		{
+			return _gMapFrame;
+		}
+
+		public function set gMapFrame(value:GateMapFrame):void
+		{
+			_gMapFrame = value;
+		}
+
+		public function get toolFrame():ToolFrame
+		{
+			return _toolFrame;
+		}
+
+		public function set toolFrame(value:ToolFrame):void
+		{
+			_toolFrame = value;
+		}
+
 		public function saveTmpNPC():void
 		{
 		 	this._npcList[this._curNPCID] = this.tmpNPC;
 			this.npcListFrame.resetNPCList(this._npcList);
+		}
+		
+		public function saveTmpGate():void
+		{
+			this._gateList[this._curGateID] = this._tmpGate;
+			this.gateListFrame.resetGateList(this._gateList);
 		}
 		
 		// after saving a new NPC
@@ -72,11 +169,25 @@ package Logic
 			
 		}
 		
+		public function insertTmpGate():void
+		{
+			this._gateList.push(_tmpGate);
+			this.gateListFrame.resetGateList(this._gateList);
+			
+		}
+		
 		public function delNPC():void
 		{
 			this._npcList.splice(_curNPCID, 1);
 			_curNPCID = 0;
-			this._npcListFrame.resetNPCList(this._npcList);
+			this.npcListFrame.resetNPCList(this._npcList);
+		}
+		
+		public function delGate():void
+		{
+			this._gateList.splice(_curGateID, 1);
+			_curGateID = 0;
+			this.gateListFrame.resetGateList(this._gateList);
 		}
 		
 		public function get npcY():int
@@ -87,7 +198,17 @@ package Logic
 		public function selectNPC(nid:int):void
 		{
 			_curNPCID = nid;
-			this._nAttrPanel.fillNPCContent(this._npcList[_curNPCID]);
+			this.npcListFrame.fillNPCContent(this._npcList[_curNPCID]);
+			this.nMapFrame.putNPC(this._npcList[_curNPCID]);
+			
+		}
+		
+		public function selectGate(nid:int):void
+		{
+			_curGateID = nid;
+			this.gateListFrame.fillGateContent(this._gateList[_curGateID]);
+			this.gMapFrame.putGate(this._gateList[_curGateID]);
+			
 		}
 
 		public function set npcY(value:int):void
@@ -135,15 +256,7 @@ package Logic
 			_npcListFrame = value;
 		}
 
-		public function get nAttrPanel():NPCAttrPanel
-		{
-			return _nAttrPanel;
-		}
-
-		public function set nAttrPanel(value:NPCAttrPanel):void
-		{
-			_nAttrPanel = value;
-		}
+	
 
 		public function get nMapFrame():NPCMapFrame
 		{
@@ -159,7 +272,14 @@ package Logic
 		{
 			_npcX = xi;
 			_npcY = yi;
-			this._nAttrPanel.setNPCPosDisplayed(xi, yi);
+			this.npcListFrame.setNPCPosDisplayed(xi, yi);
+		}
+		
+		public function setGatePos(xi:int, yi:int):void
+		{
+			_gateX = xi;
+			_gateY = yi;
+			this.gateListFrame.setGatePosDisplayed(xi, yi);
 		}
 		
 		public function get mapPicPath():String
@@ -172,24 +292,16 @@ package Logic
 			_mapPicPath = value;
 		}
 
-		public function get attrPanel():MapAttrPanel
-		{
-			return _attrPanel;
-		}
 
-		public function set attrPanel(value:MapAttrPanel):void
-		{
-			_attrPanel = value;
-		}
 		
 		public function getMapID():int
 		{
-			return _attrPanel.getMapID();
+			return _toolFrame.getMapID();
 		}
 		
 		public function setShowMapID(mid:int):void
 		{
-			_attrPanel.setMapID(mid);
+			_toolFrame.setMapID(mid);
 		}
 		
 		public function get nyMax():int
@@ -202,10 +314,6 @@ package Logic
 			return _nxOffset;
 		}
 
-		public function set mapFLFrame(value:MapFileListFrame):void
-		{
-			_mapFLFrame = value;
-		}
 		
 		/*
 			reset all UI elements with internal values in ControlCenter
@@ -216,9 +324,11 @@ package Logic
 			// parea and tarea
 			_mapFrame.setPFlags(_pArea);
 			_mapFrame.setTFlags(_tArea);
+			_mapFrame.setRbFlags(_rbx, _rby);
+			_mapFrame.setTpFlags(_tpx, _tpy);
 			
 			// map file list
-			_mapFLFrame.setMapFileList(_mapList);
+			_toolFrame.setMapFileList(_mapList);
 			
 			
 		}
@@ -240,6 +350,11 @@ package Logic
 		public function updateNPCListFrame():void
 		{
 			this.npcListFrame.resetNPCList(_npcList);
+		}
+		
+		public function updateGateListFrame():void
+		{
+			this.gateListFrame.resetGateList(_gateList);
 		}
 		
 		// desc res loaded
@@ -268,13 +383,21 @@ package Logic
 			_nxOffset = json.nxOffset;
 			_gridNum = json.gridNum;
 			_mapID = json.rid;
+			_rbx = json.rbx;
+			_rby = json.rby;
+			_tpx = json.tpx;
+			_tpy = json.tpy;
 			this.setShowMapID(_mapID);
 			_mapList = new Array();	
 			_npcList = json.npcList;
 			if (_npcList == null)
 				_npcList = new Array();
+			_gateList = json.gateList;
+			if (_gateList == null)
+				_gateList = new Array();
 			// to fill npc list frame
 			updateNPCListFrame();
+			updateGateListFrame();
 			
 			for each(var item:String in json.mapList.pic)
 			{
@@ -367,23 +490,7 @@ package Logic
 			
 		}
 
-		private function generateXML():String
-		{
-			var ret:String;
-			ret = "<map>";
-			var tmps:String;
-			tmps = "<nxMax>" + _nxMax + "</nxMax>";
-			ret += tmps;
-			tmps = "<nyMax>" + _nyMax + "</nyMax>";
-			ret += tmps;
-			tmps = "<nxOffset>" + _nxOffset + "</nxOffset>";
-			ret += tmps;
-			tmps = "<gridNum>" + _gridNum + "</gridNum>";
-			ret += tmps;
-			ret += _mapFLFrame.generateXML();
-			ret += "</map>";
-			return ret;
-		}
+
 		
 		private function generateJson():String
 		{
@@ -392,11 +499,16 @@ package Logic
 			ret.nyMax = _nyMax;
 			ret.nxOffset = _nxOffset;
 			ret.gridNum = _gridNum;
-			ret.mapList = _mapFLFrame.generateJson();
+			ret.mapList = _toolFrame.generateFLJson();
 			ret.width = _mapW;
 			ret.height = _mapH;
 			ret.rid = _mapID;
 			ret.npcList = _npcList;
+			ret.gateList = _gateList;
+			ret.rbx = _rbx;
+			ret.rby = _rby;
+			ret.tpx = _tpx;
+			ret.tpy = _tpy;
 			/*
 			ret = "<map>";
 			var tmps:String;
@@ -425,7 +537,7 @@ package Logic
 			_mapName = value;
 		}
 
-		public function get state():int
+		public function get mapState():int
 		{
 			return _mapState;
 		}
@@ -452,7 +564,7 @@ package Logic
 			return _mapH;
 		}
 		
-		public function setState(s:int):void
+		public function setMapState(s:int):void
 		{
 			_mapState = s;
 			_mapFrame.changeState();
@@ -485,6 +597,21 @@ package Logic
 			_gridSideLen = 50;
 			_mapList = new Array();
 			_npcList = new Array();
+			_gateList = new Array();
+		}
+		
+		public function clickRebirth(cx:int, cy:int):Boolean
+		{
+			this._rbx = cx;
+			this._rby = cy;
+			return true;
+		}
+		
+		public function clickTeleport(cx:int, cy:int):Boolean
+		{
+			this._tpx = cx;
+			this._tpy = cy;
+			return true;
 		}
 		
 		public function clickPassable(cx:int, cy:int):Boolean
@@ -520,7 +647,7 @@ package Logic
 		{
 			_mapW = w;
 			_mapH = h;
-			this._attrPanel.showMapSize(w, h);
+			this._toolFrame.showMapSize(w, h);
 			var a:Number = Math.cos(72.5/180 *Math.PI);
 			var b:Number = Math.sin(72.5/180 * Math.PI);
 			_nxOffset = Math.floor((_mapH / a) / 2 / _gridSideLen);
