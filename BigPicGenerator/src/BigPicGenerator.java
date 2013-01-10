@@ -15,6 +15,62 @@ public class BigPicGenerator {
 	
 	static int lowid, stdid, highid;
 	static double lowS, stdS, highS;// scale
+	static int[] lowids;
+	static int[] stdids;
+	static int[] highids;
+	static String[] gFiles;// name of files that have been generated
+	
+	public static void imgSplit(String srcImageFile, String attr)
+	{
+		int[] ids = null;
+		double ts = 0;
+		int w;	
+		int h;
+		
+		BufferedImage src = null;
+		try {
+			src = ImageIO.read(new File(srcImageFile));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} // 读入文件
+		int width = src.getWidth(); // 得到源图宽
+		int height = src.getHeight(); // 得到源图长
+		
+		if (attr.equals("low"))
+		{
+			ids = lowids;
+			ts = lowS;
+		}
+		else if (attr.equals("std"))
+		{
+			ids = stdids;
+			ts = stdS;
+		}
+		else if (attr.equals("high"))
+		{
+			ids = highids;
+			ts = highS;
+		}
+		h = (int) Math.ceil(600 * ts);
+		w = (int) Math.ceil(1200 * ts);
+		
+		int c = -1;
+		for (int hi = 0; hi < Math.round(height / h); ++hi)
+			for (int wi = 0; wi < Math.round(width / w); ++ wi)
+			{
+				++c;
+				
+				BufferedImage tag = src.getSubimage(wi * w, hi *h, w, h);
+				try {
+					ImageIO.write(tag, "JPEG", new File(String.valueOf(ids[c]) + ".jpg"));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		
+	}
 	
 	public static void imgScale(String srcImageFile, String result,
             double scale) 
@@ -36,6 +92,7 @@ public class BigPicGenerator {
 			g.drawImage(image, 0, 0, null); // 绘制缩小后的图
 			g.dispose();
 			ImageIO.write(tag, "JPEG", new File(result));// 输出到文件流
+			
 		} 
 		catch (IOException e) 
 		{
@@ -43,24 +100,24 @@ public class BigPicGenerator {
 		}
 	}
 	 
-	public static String getStr(int flag)
+	public static String getStr(String qu, int ii)
 	{
 		String ret = "";
-		if (flag == 1) //  low
+		if (qu.equals("low")) //  low
 		{
-			ret += "{\"rid\":" + lowid + ",\"quality\": \"low\"," + "\"lowid\":" + lowid
-					+ ",\"stdid\":" + stdid + ",\"highid\":" + highid + "}";
+			ret += "{\"rid\":" + lowids[ii] + ",\"quality\": \"low\"," + "\"lowid\":" + lowids[ii]
+					+ ",\"stdid\":" + stdids[ii] + ",\"highid\":" + highids[ii] + "}";
 			
 		}
-		else if (flag == 2) // std
+		else if (qu.equals("std")) // std
 		{
-			ret += "{\"rid\":" + stdid + ",\"quality\": \"std\"," + "\"lowid\":" + lowid
-					+ ",\"stdid\":" + stdid + ",\"highid\":" + highid + "}";
+			ret += "{\"rid\":" + stdids[ii] + ",\"quality\": \"std\"," + "\"lowid\":" + lowids[ii]
+					+ ",\"stdid\":" + stdids[ii] + ",\"highid\":" + highids[ii] + "}";
 		}
-		else if (flag == 3)// high
+		else if (qu.equals("high"))// high
 		{
-			ret += "{\"rid\":" + highid + ",\"quality\": \"high\"," + "\"lowid\":" + lowid
-					+ ",\"stdid\":" + stdid + ",\"highid\":" + highid + "}";
+			ret += "{\"rid\":" + highids[ii] + ",\"quality\": \"high\"," + "\"lowid\":" + lowids[ii]
+					+ ",\"stdid\":" + stdids[ii] + ",\"highid\":" + highids[ii] + "}";
 		}
 		
 		return ret;
@@ -69,7 +126,7 @@ public class BigPicGenerator {
     public static void main(String[] args) throws Exception 
     {
     	String _picPath = "";
-    	
+    	gFiles = new String[1000];// 1000 is enough
  
     		
         InputStream is = new FileInputStream(new File("resource_bigpic.xls"));
@@ -113,7 +170,7 @@ public class BigPicGenerator {
                 	break;
                 }
                 
-                
+                String[] idstrs;
                 switch (k) {
         		case 0:// remark
         			break;
@@ -121,23 +178,37 @@ public class BigPicGenerator {
         			_picPath = str;
         			break;
         		case 2:// low id
-        			
-        			lowid = Integer.parseInt(str);
+        			idstrs = str.split(",");
+        			lowids = new int[idstrs.length];
+        			for (int l = 0; l < idstrs.length; ++l)
+        			{
+        				lowids[l] = Integer.parseInt(idstrs[l]);
+        			}
         			break;
         		case 3:// low scale
-        			
         			lowS = Integer.parseInt(str) * 1.0 / 100;
         			break;
         		case 4:// std id
         			
-        			stdid = Integer.parseInt(str);
+        			idstrs = str.split(",");
+        			stdids = new int[idstrs.length];
+        			for (int l = 0; l < idstrs.length; ++l)
+        			{
+        				stdids[l] = Integer.parseInt(idstrs[l]);
+        			}
         			break;
         		case 5:// std scale
         			
         			stdS = Integer.parseInt(str) * 1.0 / 100;
         			break;
         		case 6: // high id
-        			highid = Integer.parseInt(str);
+        			idstrs = str.split(",");
+        			highids = new int[idstrs.length];
+        			for (int l = 0; l < idstrs.length; ++l)
+        			{
+        				highids[l] = Integer.parseInt(idstrs[l]);
+        				
+        			}
         			break;
         		case 7: // high scale
         			highS = Integer.parseInt(str) * 1.0 / 100;
@@ -152,45 +223,69 @@ public class BigPicGenerator {
             
             // a line read
             // generate three sizes of pic
-            if (lowS > 0) 
-            	imgScale(_picPath, "low.jpg", lowS);
-            if (stdS > 0) 
-            	imgScale(_picPath, "std.jpg", stdS);
-            imgScale(_picPath, "high.jpg", highS);
-            
-            // generate three .res file
             DataOutputStream outs = null;
-            int ret;
             FileInputStream tpinp;
-            if (lowS > 0)
+            int ret;
+            if (lowS > 0) 
             {
-            
-            outs = new DataOutputStream(new FileOutputStream("3_" + lowid + ".res"));
-            tpinp = new FileInputStream(new File("low.jpg"));
-            ret = tpinp.read(pngBuffer);
-            outs.writeUTF(getStr(1));
-            outs.writeInt(ret);
-            outs.write(pngBuffer, 0, ret);
-            outs.close();
+            	imgScale(_picPath, "low.jpg", lowS);
+            	imgSplit("low.jpg", "low");
+            	for (int p = 0; p < highids.length; ++p)
+            	{
+            		 outs = new DataOutputStream(new FileOutputStream("3_" + String.valueOf(lowids[p]) + ".res"));
+                     tpinp = new FileInputStream(new File(String.valueOf(lowids[p]) + ".jpg"));
+                     ret = tpinp.read(pngBuffer);
+                     outs.writeUTF(getStr("low", p));
+                     outs.writeInt(ret);
+                     outs.write(pngBuffer, 0, ret);
+                     outs.close();
+                     tpinp.close();
+                     File fs =new File(lowids[p] + ".jpg");
+             		 if (fs.exists())
+             			fs.delete();
+            	}
             }
-            if (stdS > 0)
+            if (stdS > 0) 
             {
-            outs = new DataOutputStream(new FileOutputStream("3_" + stdid + ".res"));
-            tpinp = new FileInputStream(new File("std.jpg"));
-            ret = tpinp.read(pngBuffer);
-            outs.writeUTF(getStr(2));
-            outs.writeInt(ret);
-            outs.write(pngBuffer, 0, ret);
-            outs.close();
+            	imgScale(_picPath, "std.jpg", stdS);
+            	imgSplit("std.jpg", "std");
+            	for (int p = 0; p < highids.length; ++p)
+            	{
+            		 outs = new DataOutputStream(new FileOutputStream("3_" + String.valueOf(stdids[p]) + ".res"));
+                     tpinp = new FileInputStream(new File(String.valueOf(stdids[p]) + ".jpg"));
+                     ret = tpinp.read(pngBuffer);
+                     outs.writeUTF(getStr("std", p));
+                     outs.writeInt(ret);
+                     outs.write(pngBuffer, 0, ret);
+                     outs.close();
+                     tpinp.close();
+                     File fs =new File(stdids[p] + ".jpg");
+             		if (fs.exists())
+             			fs.delete();
+            	}
             }
+            if (highS > 0)
+            {
+            	imgScale(_picPath, "high.jpg", highS);
+	            imgSplit("high.jpg", "high");
+	            for (int p = 0; p < highids.length; ++p)
+	        	{
+	        		 outs = new DataOutputStream(new FileOutputStream("3_" + String.valueOf(highids[p]) + ".res"));
+	                 tpinp = new FileInputStream(new File(String.valueOf(highids[p]) + ".jpg"));
+	                 ret = tpinp.read(pngBuffer);
+	                 outs.writeUTF(getStr("high", p));
+	                 outs.writeInt(ret);
+	                 outs.write(pngBuffer, 0, ret);
+	                 outs.close();
+	                 tpinp.close();
+	                 File fs =new File(highids[p] + ".jpg");
+	            		if (fs.exists())
+	            			fs.delete();
+	        	}
+            }
+	            
+
             
-            outs = new DataOutputStream(new FileOutputStream("3_" + highid + ".res"));
-            tpinp = new FileInputStream(new File("high.jpg"));
-            ret = tpinp.read(pngBuffer);
-            outs.writeUTF(getStr(3));
-            outs.writeInt(ret);
-            outs.write(pngBuffer, 0, ret);
-            outs.close();
             
         }
         is.close();
