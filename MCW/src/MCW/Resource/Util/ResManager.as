@@ -39,6 +39,9 @@ package MCW.Resource.Util
 		static public const RES_DESC_TASK_LOGIC:int = 0x34;
 		static public const RES_DESC_TASK_TEXT:int = 0x35;
 		static public const RES_DESC_DIALOG:int = 0x36;
+		static public const RES_DESC_BATTLEUNIT:int = 0x37;
+		static public const RES_DESC_MISSLE:int = 0x38;
+		static public const RES_DESC_SUMONSKILL:int = 0x39;
 		
 		/*
 		static public const RES_TYPE_IMAGE:int = 1;
@@ -135,7 +138,8 @@ package MCW.Resource.Util
 			}
 			else // has loaded, just return.
 			{
-				++_res[rind].ref;
+				if (target != null)
+					++_res[rind].ref;
 				return _res[rind].data;
 			}
 		}

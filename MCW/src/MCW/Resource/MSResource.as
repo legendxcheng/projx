@@ -6,9 +6,9 @@ package MCW.Resource
 	
 	public class MSResource implements IResource
 	{
-		private var _rtype:int;
-		private var _size:int;
-		private var _rid:int;
+		protected var _rtype:int;
+		protected var _size:int;
+		protected var _rid:int;
 		
 		
 		public function MSResource()

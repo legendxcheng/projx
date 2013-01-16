@@ -11,9 +11,11 @@ package MCW.Resource
 		private var _pArea:Vector.<Boolean>;
 		
 		
-		public function MSMapDesc()
+		public function MSMapDesc(rtype:int ,rid:int)
 		{
 			super();
+			_rtype = rtype;
+			_rid = rid;
 		}
 
 		public function get pArea():Vector.<Boolean>

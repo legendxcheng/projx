@@ -143,6 +143,27 @@ package MCW.Resource.Parser
 					uip.parseResource();
 				}
 					break;
+				case ResManager.RES_DESC_BATTLEUNIT:
+				{
+					var bap:DescSimpleParser =  new DescSimpleParser(rtype, rid, data);
+					bap.parseResource();
+				}
+					break;
+					
+				case ResManager.RES_DESC_MISSLE:
+				{
+					var misp:DescSimpleParser = new DescSimpleParser(rtype, rid, data);
+					misp.parseResource();
+				}
+					break;
+				
+				case ResManager.RES_DESC_SUMONSKILL:
+				{
+					var mssp:DescStringParser = new DescStringParser(rtype, rid, data);
+					mssp.parseResource();
+				}
+					break;
+					
 				case ResManager.RES_SCR_BATTLE:
 				{
 					

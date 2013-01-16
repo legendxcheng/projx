@@ -8,8 +8,7 @@ package MCW.Resource
 	*/
 	public class MSSimpleDesc extends MSResource
 	{
-		private var _rid:int;
-		private var _rtype:int;
+
 		private var _metaJson:Object;
 		
 		public function MSSimpleDesc(rtype:int, rid:int)

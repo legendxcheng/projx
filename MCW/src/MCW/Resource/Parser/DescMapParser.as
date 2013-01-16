@@ -31,7 +31,7 @@ package MCW.Resource.Parser
 		*/
 		public function parseResource():void
 		{
-			_map = new MSMapDesc();
+			_map = new MSMapDesc(ResManager.RES_DESC_MAP, _rid);
 			var ba:ByteArray = _data;
 			var jsonStr:String = ba.readUTF();
 			var json:Object = JSON.parse(jsonStr);

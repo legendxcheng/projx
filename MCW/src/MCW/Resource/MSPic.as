@@ -13,9 +13,11 @@ package MCW.Resource
 		private var _bmd:BitmapData;
 		
 		
-		public function MSPic()
+		public function MSPic(rtype:int, rid:int)
 		{
 			super();
+			_rtype = rtype;
+			_rid = rid;
 		}
 		
 		

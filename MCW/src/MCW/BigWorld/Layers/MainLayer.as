@@ -1,9 +1,9 @@
 package MCW.BigWorld.Layers
 {
-	import MCW.BigWorld.Display.BGChar;
-	import MCW.BigWorld.Display.Base.MBasic;
-	import MCW.BigWorld.Display.Base.MSprite;
-	import MCW.BigWorld.Logic.RenderDirector;
+	import MCW.Display.BGChar;
+	import MCW.Display.Base.MBasic;
+	import MCW.Display.Base.MSprite;
+	import MCW.BigWorld.Logic.BWRenderDirector;
 	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -43,7 +43,7 @@ package MCW.BigWorld.Layers
 
 		private function onMouseClick(e:MouseEvent):void
 		{
-			var cc:RenderDirector = RenderDirector.getInstance();
+			var cc:BWRenderDirector = BWRenderDirector.getInstance();
 			var tx:int = e.stageX + cc.camX;
 			var ty:int = e.stageY + cc.camY ;
 			var tmp:Number = Math.sin(35/180 * Math.PI);
@@ -126,7 +126,7 @@ package MCW.BigWorld.Layers
 			{
 				var ele:MBasic = _members[i] as MBasic;
 				ele.draw(_buffer, 
-					RenderDirector.getInstance().camX, RenderDirector.getInstance().camY);
+					BWRenderDirector.getInstance().camX, BWRenderDirector.getInstance().camY);
 				
 			}
 		}
@@ -150,7 +150,7 @@ package MCW.BigWorld.Layers
 			}
 			lastFrameMill = time;
 			*/
-			RenderDirector.getInstance().updtate();
+			BWRenderDirector.getInstance().updtate();
 			// TODO: iterate all elements, update all of them, then draw all of them onto the graphics
 			for (var i:int = 0; i < _members.length; ++i)
 			{
@@ -159,7 +159,7 @@ package MCW.BigWorld.Layers
 			}
 			draw();
 			
-			RenderDirector.getInstance().bgLayer.update();
+			BWRenderDirector.getInstance().bgLayer.update();
 			//_mainChar.setColorOffset(Math.random() * 100, Math.random() * 100, Math.random() * 100);
 		}
 		

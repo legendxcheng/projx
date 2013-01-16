@@ -52,7 +52,7 @@ package MCW.Resource.Util
 				attach data onto ResourceManager
 				release data
 			*/
-			var resMgr:ResManager = ResManager.getInstance();
+			//var resMgr:ResManager = ResManager.getInstance();
 			// resource parser will plug the resource
 			ResourceParser.parseRes(_rtype, _rid, loader.data);
 			
