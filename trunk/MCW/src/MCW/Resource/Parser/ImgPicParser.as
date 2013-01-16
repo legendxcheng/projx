@@ -39,7 +39,7 @@ package MCW.Resource.Parser
 			“high_rid”:
 			}
 			*/
-			_mpic = new MSPic();
+			_mpic = new MSPic(_rtype, _rid);
 			var jsonStr:String = _data.readUTF();
 			var json:Object = JSON.parse(jsonStr);
 			_mpic.metaJson = json;

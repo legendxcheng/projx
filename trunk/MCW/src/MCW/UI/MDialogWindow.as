@@ -1,9 +1,10 @@
 package MCW.UI
 {
-	import MCW.BigWorld.Logic.RenderDirector;
+	import MCW.BigWorld.Logic.BWRenderDirector;
 	import MCW.Resource.MSPic;
 	import MCW.Resource.MSSimpleDesc;
 	import MCW.Resource.Util.ResManager;
+	import MCW.Scene.SceneDirector;
 	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -238,7 +239,8 @@ package MCW.UI
 				{
 					_pct = 0;
 					_done = true;
-					RenderDirector.getInstance().uiLayer.leaveDialog();
+					
+					SceneDirector.getInstance().uiLayer.leaveDialog();
 				}
 				_tmy = (102) / 100.0 * _pct;
 				_bmy = 126 / 100.0 * _pct;

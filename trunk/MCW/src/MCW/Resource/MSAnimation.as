@@ -11,12 +11,12 @@ package MCW.Resource
 	// Just stores frames' bitmapdata.
 	public class MSAnimation extends MSResource
 	{
-		private var _rid:int; // resource id
+	
 		private var _frames:Array;// array of int
 		
 		private var _buffer:BitmapData;// merged buffer
 		
-		private var _size:int;
+
 		
 		// for space utilization
 		private var _lastBMD:BitmapData
@@ -48,6 +48,23 @@ package MCW.Resource
 			_size = _buffer.width * _buffer.height * 4;
 
 		}
+		
+		public function checkFrame(frame:int):int
+		{
+			if (_metaJson.playonce == 1)
+			{
+				if (frame >= _metaJson.animation.length)
+				{
+					frame = _metaJson.animation.length - 1;
+				}
+			}
+			else
+			{
+				frame %= _metaJson.animation.length;
+			}
+			return frame;
+			
+		}
 
 		public function set rid(value:int):void
 		{
@@ -56,7 +73,9 @@ package MCW.Resource
 		
 		public function getAnchorPoint(frame:int):Point
 		{
-			frame %= _metaJson.animation.length;
+
+				
+			frame = checkFrame(frame);
 			var fid:String = _metaJson.frameName[_metaJson.animation[frame]];
 			var tmp:Object = _tpJson.frames[fid];
 			/*return new Point(tmp.frame.x + _metaJson.anchorX - tmp.spriteSourceSize.x, 
@@ -79,13 +98,15 @@ package MCW.Resource
 			_lastFrame = 0;
 		}
 		
-		
+		//
 		public function getBitmapData(frame:int):BitmapData
 		{
 			// TODO:
-			frame %= _metaJson.animation.length;
+			frame = checkFrame(frame);
+			
 			var fid:String = _metaJson.frameName[_metaJson.animation[frame]];
 			var tmp:Object = _tpJson.frames[fid];
+			
 			/* cannot do this, for maybe there are many msprites which are using this MSAnimation*/
 			/*
 			if (_lastBMD == null || _metaJson.animation[frame] != _lastFrame)
@@ -136,7 +157,8 @@ package MCW.Resource
 		
 		public function getBasicRect(frame:int):Rectangle
 		{
-			frame %= _metaJson.animation.length;
+			frame = checkFrame(frame);
+			
 			var fid:String = _metaJson.frameName[_metaJson.animation[frame]];
 			var tmp:Object = _tpJson.frames[fid];
 			return new Rectangle(tmp.frame.x, tmp.frame.y, tmp.frame.w, tmp.frame.h);
@@ -144,7 +166,7 @@ package MCW.Resource
 		
 		public function getBasicPoint(frame:int):Point
 		{
-			frame %= _metaJson.animation.length;
+			frame = checkFrame(frame);
 			var fid:String = _metaJson.frameName[_metaJson.animation[frame]];
 			var tmp:Object = _tpJson.frames[fid];
 			return new Point(tmp.spriteSourceSize.x - _metaJson.anchorX, tmp.spriteSourceSize.y - _metaJson.anchorY);
@@ -156,7 +178,7 @@ package MCW.Resource
 		public function getClipRect(frame:int):Rectangle
 		{
 			
-			frame %= _metaJson.animation.length;
+			frame = checkFrame(frame);
 			var fid:String = _metaJson.frameName[_metaJson.animation[frame]];
 			var tmp:Object = _tpJson.frames[fid];
 			return new Rectangle(tmp.spriteSourceSize.x - _metaJson.anchorX, 

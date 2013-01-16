@@ -46,7 +46,7 @@ package MCW.Resource.Parser
 		// parse resource and then plug it
 		public function parseResource():void
 		{
-			_pic = new MSPic();
+			_pic = new MSPic(_rtype, _rid);
 			var jsonStr:String = _data.readUTF();
 			_pic.metaJson = JSON.parse(jsonStr);
 			_rid = _pic.metaJson.rid;

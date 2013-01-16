@@ -1,7 +1,7 @@
 package MCW.BigWorld.Layers
 {
-	import MCW.BigWorld.Display.MSBackground;
-	import MCW.BigWorld.Logic.RenderDirector;
+	import MCW.Display.MSBackground;
+	import MCW.BigWorld.Logic.BWRenderDirector;
 	import MCW.Resource.MSMapDesc;
 	import MCW.Resource.MSPic;
 	import MCW.Resource.Util.ResManager;
@@ -117,7 +117,7 @@ package MCW.BigWorld.Layers
 		
 		public function update():void
 		{
-			var cc:RenderDirector = RenderDirector.getInstance();
+			var cc:BWRenderDirector = BWRenderDirector.getInstance();
 			if (cc.camMoved || _needRedraw)
 			{
 				
